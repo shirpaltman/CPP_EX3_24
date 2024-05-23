@@ -1,5 +1,7 @@
 #include "catan.hpp"
 
+
+
 ariel::Catan::Catan(Player player1, player2, player3){
 }
 
@@ -12,4 +14,9 @@ Board ariel::Catan::getBoard(){
 
 void print ariel::Catan::Winner(){
     return void print();
+}
+
+const vector<unigue_ptr<Player>> &ariel::Catan::getPlayers() const
+{
+    // TODO: insert return statement here
 }
