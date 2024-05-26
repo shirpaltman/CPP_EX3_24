@@ -36,7 +36,7 @@ namespace ariel{
         void addPoints(int points);
         void placeSettelemnt(const vector<int>&placesNum,Board& board);
         void placeRoad(const vector<int>&placesNum,Board& board);
-        void rollDice()const;
+        int rollDice()const;
         void endTurn();
         void trade(Player& other,string give ,string get,int totalGive,int totalGet);
         void buyDevelopmentCard(Deck& deck);

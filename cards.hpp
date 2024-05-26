@@ -5,6 +5,7 @@
 #include <vector>
 #include <random>
 
+
 using namespace std;
 namespace ariel{
     enum class CardType{

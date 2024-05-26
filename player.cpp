@@ -45,18 +45,47 @@ namespace ariel{
                 throw invalid_argument("you can't place a road here");
             }
         }
-        void Player::rollDice() const
+        int Player::rollDice() const
         {
+          return (rand() % 6 + 1) +(rand() % 6 + 1);
         }
         void Player::endTurn()
         {
+            cout<<name<< "has ended their turn" <<endl;
         }
         void Player::trade(Player &other, string give, string get, int totalGive, int totalGet)
         {
+            if(give == "Wood" && resources[Resources::Wood] >= totalGive){
+                resources[Resources::Wood] -= totalGive;
+                other.resources[Resources::Wood] += totalGet;
+                }
+                else if(give == "Brick" && resources[Resources::Brick] >= totalGive){
+                    resources[Resources::Brick] -= totalGive;
+                    other.resources[Resources::Brick] += totalGet;
+                    }
+                
+                else if(give == "Sheep" && resources[Resources::Sheep] >= totalGive){
+                    resources[Resources::Sheep] -= totalGive;
+                    other.resources[Resources::Sheep] += totalGet;
+
+                }
+                else if(give == "Wheat" && resources[Resources::Wheat] >= totalGive){
+                    resources[Resources::Wheat] -= totalGive;
+                    other.resources[Resources::Wheat] += totalGet;
+                }
+                else if(give == "Ore" && resources[Resources::Ore] >= totalGive){
+                    resources[Resources::Ore] -= totalGive;
+                    other.resources[Resources::Ore] += totalGet;
+                }
+                else{
+                    throw invalid_argument("you don't have enough resources to trade");
+                }
+
         }
         void Player::buyDevelopmentCard(Deck& deck){
             if(resources[Resources::Wheat] >= 1 && resources[Resources::Sheep] >= 1 && resources[Resources::Ore]){
                 if(!deck.isEmpty()) {  
+          
                     resources[Resources::Wheat]--;    
                     resources[Resources::Ore]--;
                     resources[Resources::Sheep]--;
