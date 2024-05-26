@@ -3,10 +3,13 @@
 #include<vector>
 #include<string>
 #include<unordered_map>
+#include "player.hpp"
+
 
 
 using namespace std;
 namespace ariel{
+    class Player;
     class Board{
         private:
         vector<vector<string>> board;
@@ -17,12 +20,22 @@ namespace ariel{
             Board();
             void addRoad(const string& playerName,int location);
             void addSettlement(const string& playerName,int location,const string& settlementType);
-            bool islocationVaild(int location)const;
+            bool isLocationSettelmentValid(int location)const;
+            bool isLocationRoadValid(int location)const;
             void initializeBoard();
             void printBoard()const;
-    };
+            bool canPlaceSettelment(int place1,int place2,const Player& player)const;
+            bool canPlaceRoad(int place1,int place2, const Player& player)const;
+            bool PlaceSettelment(int place1,int place2, Player& player);
+            bool PlaceRoad(int place1,int place2,  Player& player);
+            const string& getName()const;
+            int getPoints()const;
 
-  
+
+
+
+
+    };
 
     struct Tile{
         Resources resource;

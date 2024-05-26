@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <random>
 
 using namespace std;
 namespace ariel{
@@ -54,9 +55,10 @@ namespace ariel{
         class Deck{
             private:
                 vector<unique_ptr<Card>> cards;
+                default_random_engine randomCards;
             public:
                 Deck();
-                void initialize();
+                void shuffle();
                 unique_ptr<Card> drawCard();
                 bool isEmpty()const;
         };

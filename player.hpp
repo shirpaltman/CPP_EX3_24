@@ -4,13 +4,12 @@
 #include<string>
 #include <vector>
 #include "board.hpp"
+#include "cards.hpp"
 #include <map>
 
-using namespace std;
 
 
-
-  
+using namespace std; 
 namespace ariel{
     
     enum class Resources{
@@ -27,6 +26,7 @@ namespace ariel{
         string name;
         int playerPoints;
         map<Resources,int> resources;
+        vector<unique_ptr<Card>> developmentCards;
         int settlements;
         int roads;
         int cities;
@@ -39,12 +39,11 @@ namespace ariel{
         void rollDice()const;
         void endTurn();
         void trade(Player& other,string give ,string get,int totalGive,int totalGet);
-        void buyDevelopmentCard();
+        void buyDevelopmentCard(Deck& deck);
         void printPoints()const;
         void printResources()const;
         const string& getName()const;
         int getPlayerPoints()const;
-    };
-    #endif
+    };   
 }
-
+#endif

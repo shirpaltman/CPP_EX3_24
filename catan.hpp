@@ -5,6 +5,7 @@
 #include "player.hpp"
 #include "board.hpp"
 #include <memory>
+#include <string>
 using namespace std;
 namespace ariel{
 
@@ -21,8 +22,8 @@ public:
     void printWinner();
     void printGameStatus()const;
     void addPlayer(unique_ptr<Player> player);
-    const vector<unigue_ptr<Player>>& getPlayers()const;
-        Catan (Player player1,Player player2,Player player3,Player player4);
+    const vector<unique_ptr<Player>>& getPlayers()const;
+    Catan (Player player1,Player player2,Player player3,Player player4);
     Catan (Player player1,Player player2,Player player3);
     Catan (Player player1,Player player2);
 };
