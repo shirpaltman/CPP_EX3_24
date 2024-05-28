@@ -12,15 +12,7 @@
 using namespace std; 
 namespace ariel{
     
-    enum class Resources{
-        Desert,
-        Brick,
-        Sheep,  
-        Wheat,
-        Wood,
-        Ore
    
-    };
     class Player{
         private:
         string name;
@@ -34,11 +26,11 @@ namespace ariel{
         public:
         Player( const string& name);
         void addPoints(int points);
-        void placeSettelemnt(const vector<int>&placesNum,Board& board);
-        void placeRoad(const vector<int>&placesNum,Board& board);
+        void placeSettelemnt(const vector<string>&placesNum,Board& board);
+        void placeRoad(const vector<string>&placesNum,Board& board);
         int rollDice()const;
         void endTurn();
-        void trade(Player& other,string give ,string get,int totalGive,int totalGet);
+        void trade(Player& other, Resources give ,Resources get,int totalGive,int totalGet);
         void buyDevelopmentCard(Deck& deck);
         void printPoints()const;
         void printResources()const;

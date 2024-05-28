@@ -13,6 +13,11 @@ using namespace ariel;
 
 int main()
 {
+
+
+    ariel::Board board;
+    board.printBoard();
+    return 0;
     Player p1("Amit");
     Player p2("Yossi");
     Player p3("Dana");
@@ -88,4 +93,4 @@ int main()
     p3.printPoints(); // p3 has 2 points because it has two settelments.
 
     catan.printWinner(); // Should print None because no player reached 10 points.
-}
+ }
