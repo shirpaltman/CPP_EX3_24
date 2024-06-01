@@ -24,10 +24,10 @@ namespace ariel{
         int cities;
 
         public:
-        Player( const string& name);
+        Player( const string& name) :name(name){}
         void addPoints(int points);
-        void placeSettelemnt(const vector<string>&placesNum,Board& board);
-        void placeRoad(const vector<string>&placesNum,Board& board);
+        void placeSettelemnt(const vector<string>&places,const vector<int>&placesNum,Board& board);
+        void placeRoad(const vector<string>&places,const vector<int>&placesNum,Board& board);
         int rollDice()const;
         void endTurn();
         void trade(Player& other, Resources give ,Resources get,int totalGive,int totalGet);
