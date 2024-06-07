@@ -3,9 +3,16 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <stdexcept>
 
 
 namespace ariel{
+
+
+
+
+
+
 
 
     Resources stringResource(const string& resourceString){
@@ -18,7 +25,15 @@ namespace ariel{
             {"Desert", Resources::Desert},
             {"Sea", Resources:: Sea}
 
-        };   
+        }; 
+        auto it =mapResource.find(resourceString);
+        if(it !=mapResource.end()){
+            return it->second;
+            }
+            else{
+                throw std::invalid_argument("Invalid resource");
+                
+            }
     }
 
 
@@ -37,7 +52,7 @@ namespace ariel{
     void Board::initializeBoard(){
         board.clear();
     //The amount of tiles will have for resource
-    unordered_map<Resources,int> resourceAmount ={
+        unordered_map<Resources,int> resourceAmount ={
         {Resources::Brick,3},
         {Resources::Wood,4},
         {Resources::Ore,4},

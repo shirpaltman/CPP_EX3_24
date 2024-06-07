@@ -5,6 +5,7 @@
 #include <vector>
 #include "board.hpp"
 #include "cards.hpp"
+#include "resources.hpp"
 #include <map>
 
 
@@ -36,6 +37,9 @@ namespace ariel{
         void printResources()const;
         const string& getName()const;
         int getPlayerPoints()const;
+        void addResource(Resources resource,int amount){
+            resources[resource] += amount;
+        }
     };   
 }
-#endif
+#endif 

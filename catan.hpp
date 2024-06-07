@@ -21,6 +21,7 @@ namespace ariel{
         void nextTurn();
         void printWinner();
         void printGameStatus()const;
+        Player& ChooseStartingPlayer();
         void addPlayer(unique_ptr<Player> player);
         const vector<unique_ptr<Player>>& getPlayers()const;
         Catan (Player player1,Player player2,Player player3,Player player4);

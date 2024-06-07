@@ -11,21 +11,13 @@
 
 
 
+
+
 using namespace std;
 namespace ariel{
 
 
- enum class Resources{
-        Desert,
-        Brick,
-        Sheep,  
-        Wheat,
-        Wood,
-        Ore,
-        Sea
-   
-    };
-    
+
 
     class Vertex;
     class Edge;
@@ -37,11 +29,13 @@ namespace ariel{
         vector<pair<string,int>> board;
         unordered_map<int,pair<string,int>> settlements;  //we will want to know in every location wths the player's name and wht settlement type
         unordered_map<int,string> roads;        //we will want to know in a specific location whtat's the players name 
-        unordered_map<int, string> tiles;
-        vector<Edge> edges;
-        vector<Vertex> vertices;
+        
         
     public:
+    
+            vector<Tile> tiles;
+            vector<Edge> edges;
+            vector<Vertex> vertices;
             Board();
             void addRoad(const string& playerName,int location);
             void addSettlement(const string& playerName,int location,const string& settlementType);
