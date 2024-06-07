@@ -8,6 +8,8 @@
 #include<algorithm>
 #include "player.hpp"
 #include "cards.hpp"
+#include "Tile.hpp"
+#include "vertex.hpp"
 
 
 
@@ -52,28 +54,6 @@ namespace ariel{
   
 
 
-        class Tile{
-        public:
-            Resources resource;
-            int number;
-            bool hasThief;
-            Tile(Resources res,int num) : resource(res), number(num) ,hasThief(false){}
-        };
-    }; 
-
-    Resources stringResource(const string& resourceString);
-
-    class Vertex{
-        public:
-        string owner;
-        vector<vector<Tile>> adjTiles;
-        Vertex(string owner = "",vector<vector<Tile>> adjTiles ={}):owner(owner),adjTiles(adjTiles){}
-        
-        void addAdjTile(vector<Tile> tile){
-            adjTiles.push_back(tile);
-        }
-    };
-
 
     class Edge{
         public:
@@ -84,5 +64,7 @@ namespace ariel{
         Edge(int id,int ver1,int ver2) : id(id),vertex1(ver1),vertex2(ver2){}
  
     };
+};
 }
+
 #endif

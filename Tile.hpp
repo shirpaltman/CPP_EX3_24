@@ -7,18 +7,30 @@ using namespace std;
 namespace ariel{
     class Tile{
    
+
+
+    private:
+
+        Resources resource_;
+        int value_;
+        vector<Tile> adjTiles_;
+        vector<int> vertices_;
+
+
     public:
         
-        Resources resource;
-        int number;
-        vector<Tile> adjTiles;
 
+        Tile(Resources resource,int value=0,initializer_list<Tile> adjTiles={},vector<int>myver={})
+            :resource_(resource),value_(value){
+                adjTiles_ =adjTiles;
+                vertices_ = myver;
+          
+        }
 
-        Tile(Resources resource,int num,vector<Tile> adjTiles={})
-        :resource(resource),number(num),adjTiles(adjTiles){}
-
-        int getNumber()const {
-            return number;
+        
+        
+        int getValue()const {
+            return value_;
         }
     };
 }

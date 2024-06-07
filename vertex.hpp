@@ -8,16 +8,31 @@
 using namespace std;
 namespace ariel{
     class Vertex {
+        private:
+        string owner;
+        vector<Tile> adjTiles;
+        vector< Vertex*>adjVertices;
+            
+        
         public:
-            string owner;
-            vector<Tile> adjTiles;
             
             Vertex() :owner(""){}
 
-            void addAdjacentTile (const vector<Tile>& tiles){
-                adjTiles.insert(adjTiles.end(),tiles.begin(),tiles.end());
+            void addAdjacentTile(const Tile& tile) {
+            adjTiles.push_back(tile);
             }
 
+            void addAdjacentVertex(Vertex& vertex) {
+                adjVertices.push_back(&vertex);
+            }
+
+            const vector<Tile>& getAdjacentTiles() const {
+                return adjTiles;
+            }
+
+            const vector<Vertex*>& getAdjacentVertices() const {
+                return adjVertices;
+            }
             const string& getOwner()const{
                 return owner;
             }
