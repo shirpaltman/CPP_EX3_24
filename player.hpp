@@ -26,16 +26,17 @@ namespace ariel{
 
         public:
         Player( const string& name) :name(name){}
+        string getName() const;
         void addPoints(int points);
         void placeSettelemnt(const vector<string>&places,const vector<int>&placesNum,Board& board);
         void placeRoad(const vector<string>&places,const vector<int>&placesNum,Board& board);
         int rollDice()const;
         void endTurn();
-        void trade(Player& other, Resources give ,Resources get,int totalGive,int totalGet);
+        void trade(Player& other, string give ,string get,int totalGive,int totalGet);
         void buyDevelopmentCard(Deck& deck);
         void printPoints()const;
         void printResources()const;
-        const string& getName()const;
+        string getName()const;
         int getPlayerPoints()const;
         void addResource(Resources resource,int amount){
             resources[resource] += amount;

@@ -53,21 +53,59 @@ namespace ariel{
         {
             cout<<name<< "has ended their turn" <<endl;
         }
-        void Player::trade(Player &other,   Resources give, Resources get, int totalGive, int totalGet)
+        void Player::trade(Player &other,   string give, string get, int totalGive, int totalGet)
         {
-                if(resources[give]< totalGive){
-                    throw invalid_argument("you don't have enough resources to trade");
+            if(give == "Wood" && resources[Resources::Wood] >= totalGive){
+                resources[Resources::Wood] -= totalGive;
+                other.resources[Resources::Wood] += totalGet;
                 }
-                if(resources[get]< totalGet){
-                    throw invalid_argument("ThE other player doesn't have enough resources to trade");
+            else if(give == "Brick" && resources[Resources::Brick] >= totalGive){
+                resources[Resources::Brick] -= totalGive;
+                other.resources[Resources::Brick] += totalGet;
+            }
+            else if(give == "Sheep" && resources[Resources::Sheep] >= totalGive){
+                resources[Resources::Sheep] -= totalGive;
+                other.resources[Resources::Sheep] += totalGet;
+            }
+            else if(give == "Wheat" && resources[Resources::Wheat] >= totalGive){
+                resources[Resources::Wheat] -= totalGive;
+                other.resources[Resources::Wheat] += totalGet;
+            }
+            else if(give == "Ore" && resources[Resources::Ore] >= totalGive){
+                resources[Resources::Ore] -= totalGive;
+                other.resources[Resources::Ore] += totalGet;
+            }
+            else{
+                throw invalid_argument("you don't have enough resources to trade");
+            }
+            if(get == "Wood" && other.resources[Resources::Wood] >= totalGet){
+                resources[Resources::Wood] += totalGet;
+                other.resources[Resources::Wood] -= totalGive;
+            }
+            else if(get == "Brick" && other.resources[Resources::Brick] >= totalGet){
+                resources[Resources::Brick] += totalGet;
+                other.resources[Resources::Brick] -= totalGive;
+            }
+            else if(get == "Sheep" && other.resources[Resources::Sheep] >= totalGet){
+                resources[Resources::Sheep] += totalGet;
+                other.resources[Resources::Sheep] -= totalGive;
                 }
-                resources[give] = resources[give]-totalGive;
-                other.resources[give]= other.resources[give]+totalGive;
-               
-                other.resources[get]= other.resources[get]-totalGet;
-                 resources[get]= resources[get]+totalGet;
-        
-                cout << "Trade successful!" << endl;
+                else if(get == "Wheat" && other.resources[Resources::Wheat] >= totalGet){
+                    resources[Resources::Wheat] += totalGet;
+                    other.resources[Resources::Wheat] -= totalGive;
+                }
+                else if(get == "Ore" && other.resources[Resources::Ore] >= totalGet){
+                    resources[Resources::Ore] += totalGet;
+                    other.resources[Resources::Ore] -= totalGive;
+                }
+                else{
+                    throw invalid_argument("the other player doesn't have enough resources to trade");
+                }
+                
+                           
+                                
+                                            
+                
         }
         
         void Player::buyDevelopmentCard(Deck& deck){
@@ -99,7 +137,7 @@ namespace ariel{
 
             }
         }
-        const string &Player::getName() const
+        string Player::getName() const
         {
             return name;
         }

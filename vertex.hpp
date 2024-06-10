@@ -10,29 +10,29 @@ namespace ariel{
     class Vertex {
         private:
         string owner;
-        vector<Tile> adjTiles;
-        vector< Vertex*>adjVertices;
+        vector<Tile*> adjTiles;
+        //vector< Vertex*>adjVertices;
             
         
         public:
             
             Vertex() :owner(""){}
 
-            void addAdjacentTile(const Tile& tile) {
-            adjTiles.push_back(tile);
+            void addAdjacentTile(Tile* tile) {
+                adjTiles.push_back(tile);
             }
 
-            void addAdjacentVertex(Vertex& vertex) {
-                adjVertices.push_back(&vertex);
-            }
+            // void addAdjacentVertex(Vertex& vertex) {
+            //     adjVertices.push_back(&vertex);
+            // }
 
-            const vector<Tile>& getAdjacentTiles() const {
-                return adjTiles;
-            }
+            // const vector<Tile>& getAdjacentTiles() const {
+            //     return adjTiles;
+            // }
 
-            const vector<Vertex*>& getAdjacentVertices() const {
-                return adjVertices;
-            }
+            // const vector<Vertex*>& getAdjacentVertices() const {
+            //     return adjVertices;
+            // }
             const string& getOwner()const{
                 return owner;
             }

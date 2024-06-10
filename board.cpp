@@ -57,18 +57,21 @@ namespace ariel{
         edges.resize(72);
 
         // Vertex to vertex connections (example logic, should be tailored to actual game logic)
-        vector<pair<int, int>> vertexConnections = {
-            {0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 6}, {6, 0},
-            {7, 8}, {8, 9}, {9, 10}, {10, 11}, {11, 12}, {12, 13}, {13, 14},
-            {15, 16}, {16, 17}, {17, 18}, {18, 19}, {19, 20}, {20, 21}, {21, 22},
-            {23, 24}, {24, 25}, {25, 26}, {26, 27}, {27, 28}, {28, 29}, {29, 30},
-            {31, 32}, {32, 33}, {33, 34}, {34, 35}, {35, 36}, {36, 37}, {37, 38},
-            {39, 40}, {40, 41}, {41, 42}, {42, 43}, {43, 44}, {44, 45}, {45, 46},
-            {47, 48}, {48, 49}, {49, 50}, {50, 51}, {51, 52}, {52, 53}, {53, 0}
+        vector<pair<unsigned int,unsigned int>> vertexConnections = {
+            {0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 6}, {0, 8}, {2, 10}, {4, 12}, {6, 14}, 
+            {7, 8}, {8, 9}, {9, 10}, {10, 11}, {11, 12}, {12, 13}, {13, 14}, {14, 15}, {7, 17}, 
+            {9, 19}, {11, 21}, {13, 23}, {15, 25}, {16, 17}, {17, 18}, {18, 19}, {19, 20}, 
+            {20, 21}, {21, 22}, {22, 23}, {23, 24}, {24, 25}, {25, 26}, {16, 27}, {18, 29}, 
+            {20, 31}, {22, 33}, {24, 35}, {26, 37}, {27, 28}, {28, 29}, {29, 30}, {30, 31}, 
+            {31, 32}, {32, 33}, {33, 34}, {34, 35}, {35, 36}, {36, 37}, {28, 38}, {30, 40}, 
+            {32, 42}, {34, 44}, {36, 46}, {38, 39}, {39, 40}, {40, 41}, {41, 42}, {42, 43}, 
+            {43, 44}, {44, 45}, {45, 46}, {39, 47}, {41, 49}, {43, 51}, {45, 53}, {47, 48}, 
+            {48, 49}, {49, 50}, {50, 51}, {51, 52}, {52, 53}
+        
         };
 
-        for (const auto& connection : vertexConnections) {
-            edges.emplace_back(vertices[connection.first], vertices[connection.second]);
+        for (const auto& [v1,v2] : vertexConnections) {
+            edges.emplace_back(vertices[v1],vertices[v2]);
         }
     }
 
@@ -142,8 +145,53 @@ namespace ariel{
     //     }
     // }
     //printBoard();
+
+    void Board::addRoad(const string &playerName, int location)
+    {
+        if(isLocationRoadValid(location)){
+            roads[location]=playerName;
+            cout<<playerName<< "placed a road at location" << location << "."<<endl;
+        }
+        else{
+            cout << "Invalid road placement. Please try again." << endl;
+        }
+    }
+
+    void Board::addSettlement(const string &playerName, int location, const string &settlementType){
+        if(isSettelmentValid(location)){
+            settlements[location]=make_pair(playerName,settlements);
+            cout<<playerName<< "placed a " << settlementType << " at location" << location << "."<<endl;
+        }else{
+            cout << "Invalid settlement placement. Please try again." << endl;
+        }
+    }
+
+    bool Board::isSettelmentValid(int location, const Player &player) const{
+        //we want to check if the location is vaild for palcing a settlement
+        if(settlements.find(location) != settlements.end()){
+            return false; //The location is already occupied
+        }
+        for(const auto& settlement : settlements){
+            if(abs(settlement.first - location)<=2){
+                return false; //Catan's distance rule must be at least two intersections away
+            }
+          //TO DO!!!
+        }
+        return false;
+    }
+
+
+   bool Board::isLocationRoadValid(int location, const Player &player) const{
+    return false;
+   }
+
     
-    void Board::printBoard()const{
+    void Board::initializeBoard()
+    {
+    }
+
+    void Board::printBoard() const
+    {
         cout<< "Initialized board:" <<endl;
         int index = 0;
         for (const auto& tile : board) {
@@ -151,6 +199,28 @@ namespace ariel{
         ++index;
         }
     }
+    bool Board::canPlaceSettelment(int place1, int place2, const Player &player) const
+    {
+        return false;
+    }
+    bool Board::canPlaceRoad(int place1, int place2, const Player &player) const
+    {
+        return false;
+    }
+    bool Board::PlaceSettelment(int place1, int place2, Player &player)
+    {
+        return false;
+    }
+    bool Board::PlaceRoad(int place1, int place2, Player &player)
+    {
+        return false;
+    }
+    const string &Board::getName() const
+    {
+        // TODO: insert return statement here
+    }
+    int Board::getPoints() const
+    {
+        return 0;
+    }
 }
-
-          
