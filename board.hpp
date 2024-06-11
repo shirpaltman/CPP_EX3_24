@@ -7,9 +7,10 @@
 #include<random>
 #include<algorithm>
 #include "player.hpp"
-#include "cards.hpp"
+#include "Card.hpp"
 #include "Tile.hpp"
 #include "vertex.hpp"
+#include "catan.hpp"
 
 using namespace std;
 namespace ariel{
@@ -49,8 +50,8 @@ namespace ariel{
     public:
     
             Board() = default;
-            void addRoad(const string& playerName,int location);
-            void addSettlement(const string& playerName,int location,const string& settlementType);
+            void addRoad(const string& playerName,int location, Player& player);
+            void addSettlement(const string& playerName,int location,const string& settlementType,Player& player);
             bool isSettelmentValid(int location,const Player& player)const;
             bool isLocationRoadValid(int location,const Player& player)const;
             void initializeBoard();
@@ -59,7 +60,6 @@ namespace ariel{
             bool canPlaceRoad(int place1,int place2, const Player& player)const;
             bool PlaceSettelment(int place1,int place2, Player& player);
             bool PlaceRoad(int place1,int place2,  Player& player);
-            const string& getName()const;
             int getPoints()const;
   
 

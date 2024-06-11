@@ -16,35 +16,8 @@ namespace ariel{
 
         }
 
-        void Player::addPoints(int points){
-            playerPoints = playerPoints+points;
-        }
-        
-        void Player::placeSettelemnt(const vector<int> &placesNum, Board &board){
-            if(placesNum.size() !=2){
-                throw invalid_argument("you need exactly 2 place to place a settelment");
-            }
-            //checking if the settement cand be placed and if it vaild place it 
-            if(board.canPlaceSettelment(placesNum[0],placesNum[1],this->name)){
-                board.PlaceSettelment(placesNum[0],placesNum[1],*this);
-            }
-            else{
-                throw invalid_argument("you can't place a settelment here");
-            }
-        }
-        void Player::placeRoad(const vector<int> &placesNum, Board &board)
-        {
-            if(placesNum.size() !=2){
-                throw invalid_argument("you need exactly 2 place to place a Road");
-            }
-            //checking if the settement cand be placed and if it vaild place it 
-            if(board.canPlaceRoad(placesNum[0],placesNum[1],this->name)){
-                board.PlaceRoad(placesNum[0],placesNum[1],*this);
-            }
-            else{
-                throw invalid_argument("you can't place a road here");
-            }
-        }
+      
+     
         int Player::rollDice() const
         {
           return (rand() % 6 + 1) +(rand() % 6 + 1);
@@ -137,6 +110,7 @@ namespace ariel{
 
             }
         }
+  
         string Player::getName() const
         {
             return name;
@@ -144,5 +118,13 @@ namespace ariel{
         int Player::getPlayerPoints() const
         {
             return playerPoints;
+        }
+        int Player::getResource(const string &resource) const
+        {
+            auto it =resources.find(resource);
+            if(it != resources.end()){
+                return it->second;
+            return 0;
+            }
         }
 }

@@ -3,25 +3,39 @@
 #include <stdexcept>
 #include <algorithm>
 #include  <random>
+#include <memory>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
 
 using namespace std;
 namespace ariel{
 
-    Catan::Catan(Player player1,Player player2,Player player3,Player player4): currentPlayer(0){
-        players.push_back(make_unique<Player>(move(player1)));
-        players.push_back(make_unique<Player>(move(player2)));
-        players.push_back(make_unique<Player>(move(player3)));
-        players.push_back(make_unique<Player>(move(player4)));
+    Catan::Catan(Player player1,Player player2,Player player3,Player player4){
+        players.push_back( new Player (move(player1)));
+        players.push_back(new Player (move(player2)));
+        players.push_back(new Player(move(player3)));
+        players.push_back(new Player(move(player4)));
+        currentPlayer=0;
     } 
-    Catan::Catan(Player player1,Player player2,Player player3): currentPlayer(0){
-        players.push_back(make_unique<Player>(move(player1)));
-        players.push_back(make_unique<Player>(move(player2)));
-        players.push_back(make_unique<Player>(move(player3)));
+    Catan::Catan(Player player1,Player player2,Player player3){
+        players.push_back(new Player(move(player1)));
+        players.push_back( new Player(move(player2)));
+        players.push_back(new Player(move(player3)));
+        currentPlayer=0;
     } 
 
-    Catan::Catan(Player player1,Player player2): currentPlayer(0){
-        players.push_back(make_unique<Player>(move(player1)));
-        players.push_back(make_unique<Player>(move(player2)));
+    Catan::Catan(Player player1,Player player2){
+        players.push_back(new Player(move(player1)));
+        players.push_back(new Player(move(player2)));
+        currentPlayer=0;
+    }
+
+    Catan ::~Catan(){
+        for (auto &player : players) {
+            delete player;
+        }
     }
     void Catan::checkForWinner(){
         for(const auto& player : players){
@@ -33,24 +47,26 @@ namespace ariel{
     }
 
     void Catan::ChooseStartP(){
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<> dis(0, players.size() - 1);
-        currentPlayer = dis(gen);
-        cout<< "Starting player: " <<players[currentPlayer]->getName <<endl;
+        // random_device rd;
+        // mt19937 gen(rd());
+        size_t i=static_cast<size_t>(rand()%3 +1);
+        //srand(static_cast<unsigned>(time(nullptr)));
+        currentPlayer = static_cast<int>(i);
+        cout << "Starting player: " << players[static_cast<size_t>(currentPlayer)]->getName() << endl;
     }
 
     void Catan::nextTurn(){
-        currentPlayer = (currentPlayer + 1) % players.size();
-        cout << "Next player: " << players[currentPlayer]->getName << endl;
+        currentPlayer = (currentPlayer + 1) % static_cast<int>(players.size());
+        cout << "Next player: " << players[static_cast<size_t>(currentPlayer)]->getName() << endl;
     }
     void Catan::printWinner(){
          for(const auto& player : players){
             if(player->getPlayerPoints() >= 10){
                 cout << " The winner is  " << player->getName() << endl;
-                break;
+                return;
             }
         }
+        cout <<"No winner yet." <<endl;
     }
     void Catan::printGameStatus() const{
         cout << "Current game status: " << endl;
@@ -61,13 +77,15 @@ namespace ariel{
 
     Player &Catan::ChooseStartingPlayer()
     {
-        return *players[currentPlayer];
+        currentPlayer = static_cast<int>(rand() % 3+1);
+        cout << "Starting player: " << players[static_cast<size_t>(currentPlayer)]->getName() << endl;
+        return *players[static_cast<size_t>(currentPlayer)];
     }
-    void Catan::addPlayer(unique_ptr<Player> player)
+    void Catan::addPlayer(Player* player)
     {
-        players.push_back(move(player));
+        players.push_back(player);
     }
-    const vector<unique_ptr<Player>> &Catan::getPlayers() const{
+    const vector<Player*> &Catan::getPlayers() const{
         return players;
     }
 

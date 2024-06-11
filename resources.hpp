@@ -1,5 +1,11 @@
 #ifndef RESOURCES_HPP
 #define RESOURCES_HPP
+#include <unordered_map>
+#include <stdexcept>
+#include <memory>
+#include <vector>
+
+
 using namespace std;
 namespace ariel{
     enum class Resources{

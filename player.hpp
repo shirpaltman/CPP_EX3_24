@@ -3,11 +3,11 @@
 
 #include<string>
 #include <vector>
-#include "board.hpp"
-#include "cards.hpp"
+#include "Card.hpp"
 #include "resources.hpp"
 #include <map>
-
+#include <unordered_map>
+#include "board.hpp"
 
 
 using namespace std; 
@@ -18,27 +18,33 @@ namespace ariel{
         private:
         string name;
         int playerPoints;
-        map<Resources,int> resources;
-        vector<unique_ptr<Card>> developmentCards;
+        bool turn;
+        unordered_map<Resources,int> resources;
+        //vector<unique_ptr<Card>> deck;
+        
         int settlements;
         int roads;
         int cities;
 
         public:
-        Player( const string& name) :name(name){}
+        Player( const string& name) :name(name),playerPoints(0){}
         string getName() const;
-        void addPoints(int points);
-        void placeSettelemnt(const vector<string>&places,const vector<int>&placesNum,Board& board);
-        void placeRoad(const vector<string>&places,const vector<int>&placesNum,Board& board);
+        void addPoints(int amount){
+            playerPoints += amount;
+        }
+        int getPoints() const{
+            return playerPoints;
+        }
+        void incrementPoints(int increment){playerPoints = playerPoints + increment;}
         int rollDice()const;
         void endTurn();
         void trade(Player& other, string give ,string get,int totalGive,int totalGet);
         void buyDevelopmentCard(Deck& deck);
         void printPoints()const;
         void printResources()const;
-        string getName()const;
         int getPlayerPoints()const;
-        void addResource(Resources resource,int amount){
+        int getResource(const string& resource)const;
+        void addResource(const string& resource,int amount){
             resources[resource] += amount;
         }
     };   

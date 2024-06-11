@@ -1,5 +1,6 @@
 #include "board.hpp"
-#include "cards.hpp"
+#include "Card.hpp"
+#include "player.hpp"
 #include <iostream>
 #include <random>
 #include <algorithm>
@@ -49,7 +50,7 @@ namespace ariel{
     };
     for(size_t i=0 ; i<vertexToTiles.size(); ++i){
         for(int tileIndex : vertexToTiles[i]){
-            vertices[i].addAdjacentTile(tiles[tileIndex-1]);
+            vertices[i].addAdjacentTile(&tiles[tileIndex-1]);
         }
     }
 
@@ -146,10 +147,12 @@ namespace ariel{
     // }
     //printBoard();
 
-    void Board::addRoad(const string &playerName, int location)
+    void Board::addRoad(const string &playerName, int location, Player& player)
     {
-        if(isLocationRoadValid(location)){
-            roads[location]=playerName;
+        if(isLocationRoadValid(location,player)){
+            roads[location]=playerName; 
+            player.addResource("Wood",-1);
+            player.addResource("Brick",-1);  
             cout<<playerName<< "placed a road at location" << location << "."<<endl;
         }
         else{
@@ -157,10 +160,15 @@ namespace ariel{
         }
     }
 
-    void Board::addSettlement(const string &playerName, int location, const string &settlementType){
-        if(isSettelmentValid(location)){
-            settlements[location]=make_pair(playerName,settlements);
+    void Board::addSettlement(const string &playerName, int location, const string &settlementType, Player& player){
+        if(isSettelmentValid(location,player)){
+            settlements[location]=make_pair(playerName,settlementType);
+            player.addResource("Wood",-1);
+            player.addResource("Brick",-1);
+            player.addResource("Sheep",-1);
+            player.addResource("Wheat",-1);
             cout<<playerName<< "placed a " << settlementType << " at location" << location << "."<<endl;
+            player.addPoints(1);
         }else{
             cout << "Invalid settlement placement. Please try again." << endl;
         }
@@ -174,15 +182,25 @@ namespace ariel{
         for(const auto& settlement : settlements){
             if(abs(settlement.first - location)<=2){
                 return false; //Catan's distance rule must be at least two intersections away
-            }
-          //TO DO!!!
+            } 
         }
-        return false;
+        if(player.getResource("Wood") < 1  || player.getResource("Brick") <1 || player.getResource("Sheep") || player.getResource("Wheat") ){
+            return false;
+        }
+        return true;
     }
 
 
    bool Board::isLocationRoadValid(int location, const Player &player) const{
-    return false;
+    //we want to check if the location is vaild for palcing a road
+        if(roads.find(location) != roads.end()){
+            return false; //The location is already occupied
+        }
+        // Check if the player has enough resources (1 Wood, 1 Brick)
+        if(player.getResource("Wood")< 1 || player.getResource("Brick")< 1){
+            return false;
+        }
+        return true;
    }
 
     
@@ -192,35 +210,49 @@ namespace ariel{
 
     void Board::printBoard() const
     {
-        cout<< "Initialized board:" <<endl;
-        int index = 0;
-        for (const auto& tile : board) {
-        cout << "[" << index << "] " << tile.first << " (" << tile.second << ")" << endl;
-        ++index;
+         cout << "Board state:" << endl;
+        for (const auto& [location, playerName] : roads) {
+            cout << "Road at location " << location << " by " << playerName << endl;
         }
+        for (const auto& [location, settlement] : settlements) {
+            cout << settlement.first << " has a " << settlement.second << " at location " << location << endl;
+        } 
+
     }
+
+    
+    
     bool Board::canPlaceSettelment(int place1, int place2, const Player &player) const
     {
-        return false;
+        return isSettelmentValid(place1,player) && isSettelmentValid(place2,player);
     }
     bool Board::canPlaceRoad(int place1, int place2, const Player &player) const
     {
-        return false;
+        return isLocationRoadValid(place1,player) && isLocationRoadValid(place2,player);
     }
     bool Board::PlaceSettelment(int place1, int place2, Player &player)
     {
+        if(canPlaceSettelment(place1,place2,player)){
+            settlements[place1] = make_pair(player.getName(), "Settlement");
+            settlements[place2] = make_pair(player.getName(), "Settlement");
+            return true;
+        }
         return false;
     }
+
     bool Board::PlaceRoad(int place1, int place2, Player &player)
     {
+        if(canPlaceRoad(place1,place2,player)){
+            roads[place1] = player.getName();
+            roads[place2] = player.getName();
+            return true;
+        }
         return false;
     }
-    const string &Board::getName() const
-    {
-        // TODO: insert return statement here
-    }
+  
     int Board::getPoints() const
     {
+        /////////////////TO DO!!!!!
         return 0;
     }
 }

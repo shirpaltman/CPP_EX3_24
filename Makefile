@@ -5,7 +5,7 @@ VALGRIND_FLAGS = -v --leak-kinds=all --error-exitcode=99
 TARGET= catan
 DEMO_TARGET= demo
 
-SRCS= Demo.cpp main.cpp catan.cpp player.cpp board.cpp cards.cpp
+SRCS= Demo.cpp catan.cpp player.cpp board.cpp Card.cpp
 OBJS= $(SRCS:.cpp=.o)
 DEPS= catan.hpp player.hpp board.hpp cards.hpp
 
@@ -14,12 +14,16 @@ all:$(TARGET) $(DEMO_TARGET)
 $(TARGET):$(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
 
+$(DEMO_TARGET):$(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(DEMO_TARGET) $(OBJS)
+
+
 %.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 	
 	
 clean:
-	rm -f $(OBJS )$(TARGET)
+	rm -f $(OBJS )$(TARGET) $(DEMO_TARGET)
 
 .PHONY: all clean
 
