@@ -8,6 +8,7 @@
 #include "player.hpp"
 #include "board.hpp"
 #include "Card.hpp"
+#include "resources.hpp"
 using namespace std;
 namespace ariel{
 
