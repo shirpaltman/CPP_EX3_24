@@ -93,8 +93,11 @@ namespace ariel{
                 Deck(Deck&&) = default; // default move constructor
                 Deck& operator=(Deck&&) = default; // default move assignment operator
 
+                ~Deck(){
+                    for(auto card : cards){
+                        delete card;
+                    }
+                }
         };
-
-
 }
 #endif // CARD_HPP

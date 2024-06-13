@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include "player.hpp"
+#include <random>
 
 using namespace std;
 namespace ariel{
@@ -20,75 +21,44 @@ namespace ariel{
      
         int Player::rollDice() const
         {
-          return (rand() % 6 + 1) +(rand() % 6 + 1);
+            static random_device rd;  // Non-deterministic generator
+            static mt19937 gen(rd()); // Mersenne Twister engine
+            static uniform_int_distribution<> dis(1, 6);
+            int check= dis(gen) + dis(gen);
+            cout<< check<<endl;
+            return check ;
         }
         void Player::endTurn()
         {
-            cout<<name<< "has ended their turn" <<endl;
+            cout<<name<< " has ended their turn" <<endl;
         }
         void Player::trade(Player &other,   string give, string get, int totalGive, int totalGet)
         {
-            if(give == "Wood" && resources[Resources::Wood] >= totalGive){
-                resources[Resources::Wood] -= totalGive;
-                other.resources[Resources::Wood] += totalGet;
-                }
-            else if(give == "Brick" && resources[Resources::Brick] >= totalGive){
-                resources[Resources::Brick] -= totalGive;
-                other.resources[Resources::Brick] += totalGet;
-            }
-            else if(give == "Sheep" && resources[Resources::Sheep] >= totalGive){
-                resources[Resources::Sheep] -= totalGive;
-                other.resources[Resources::Sheep] += totalGet;
-            }
-            else if(give == "Wheat" && resources[Resources::Wheat] >= totalGive){
-                resources[Resources::Wheat] -= totalGive;
-                other.resources[Resources::Wheat] += totalGet;
-            }
-            else if(give == "Ore" && resources[Resources::Ore] >= totalGive){
-                resources[Resources::Ore] -= totalGive;
-                other.resources[Resources::Ore] += totalGet;
+            Resources giveR = stringToResources(give);
+            Resources getR = stringToResources(get);
+            if(resources[giveR] >= totalGive){
+                resources[giveR] -= totalGive;
+                other.resources[getR] += totalGet;
             }
             else{
-                throw invalid_argument("you don't have enough resources to trade");
+                throw invalid_argument("You don't have enough resources to trade");
             }
-            if(get == "Wood" && other.resources[Resources::Wood] >= totalGet){
-                resources[Resources::Wood] += totalGet;
-                other.resources[Resources::Wood] -= totalGive;
+            if(other.resources[getR] >= totalGet){
+                other.resources[getR] += totalGet;
+                resources[giveR] -= totalGive;
             }
-            else if(get == "Brick" && other.resources[Resources::Brick] >= totalGet){
-                resources[Resources::Brick] += totalGet;
-                other.resources[Resources::Brick] -= totalGive;
-            }
-            else if(get == "Sheep" && other.resources[Resources::Sheep] >= totalGet){
-                resources[Resources::Sheep] += totalGet;
-                other.resources[Resources::Sheep] -= totalGive;
-                }
-                else if(get == "Wheat" && other.resources[Resources::Wheat] >= totalGet){
-                    resources[Resources::Wheat] += totalGet;
-                    other.resources[Resources::Wheat] -= totalGive;
-                }
-                else if(get == "Ore" && other.resources[Resources::Ore] >= totalGet){
-                    resources[Resources::Ore] += totalGet;
-                    other.resources[Resources::Ore] -= totalGive;
-                }
-                else{
-                    throw invalid_argument("the other player doesn't have enough resources to trade");
-                }
-                
-                           
-                                
-                                            
-                
+            else{
+                throw invalid_argument("The other player doesn't have enough resources to trade");
+            }       
         }
         
         void Player::buyDevelopmentCard(Deck& deck){
             if(resources[Resources::Wheat] >= 1 && resources[Resources::Sheep] >= 1 && resources[Resources::Ore]){
                 if(!deck.isEmpty()) {  
-          
                     resources[Resources::Wheat]--;    
                     resources[Resources::Ore]--;
                     resources[Resources::Sheep]--;
-                    developmentCards.push_back(deck.drawCard());
+                    this->developmentCards.push_back(deck.drawCard());
                 }
                 else{
                     throw invalid_argument("there are no more cards in the deck");
@@ -119,12 +89,12 @@ namespace ariel{
         {
             return playerPoints;
         }
-        int Player::getResource(const string &resource) const
+        int Player::getResource(Resources resource) const
         {
             auto it =resources.find(resource);
             if(it != resources.end()){
                 return it->second;
-            return 0;
             }
+            return 0;
         }
 }

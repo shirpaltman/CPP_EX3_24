@@ -7,12 +7,16 @@
 #include "resources.hpp"
 #include <map>
 #include <unordered_map>
-#include "board.hpp"
+//#include "board.hpp"
 
 
 using namespace std; 
+
+
 namespace ariel{
     
+    //class Deck;
+    class Board;
    
     class Player{
         private:
@@ -21,13 +25,14 @@ namespace ariel{
         bool turn;
         unordered_map<Resources,int> resources;
         //vector<unique_ptr<Card>> deck;
+        vector<Card*> developmentCards;
         
         int settlements;
         int roads;
         int cities;
 
         public:
-        Player( const string& name) :name(name),playerPoints(0){}
+        Player( const string& name) ;
         string getName() const;
         void addPoints(int amount){
             playerPoints += amount;
@@ -43,8 +48,8 @@ namespace ariel{
         void printPoints()const;
         void printResources()const;
         int getPlayerPoints()const;
-        int getResource(const string& resource)const;
-        void addResource(const string& resource,int amount){
+        int getResource(Resources resource)const;
+        void addResource(Resources resource,int amount){
             resources[resource] += amount;
         }
     };   

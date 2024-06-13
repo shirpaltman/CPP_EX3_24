@@ -5,16 +5,25 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
-#include "player.hpp"
-#include "board.hpp"
 #include "Card.hpp"
 #include "resources.hpp"
+#include "board.hpp"
+#include "player.hpp"
+
 using namespace std;
+
+// namespace ariel{
+//     class Player;
+//     class Board;
+// }
+
+
+
 namespace ariel{
 
     class Catan{
     private:
-        vector<Player*> players;  //check?
+        std::vector<Player*> players;  //check?
         Board board;
         int currentPlayer;
     public:
@@ -27,7 +36,7 @@ namespace ariel{
         void printGameStatus()const;
         Player& ChooseStartingPlayer();
         void addPlayer(Player* player);
-        const vector<Player*>& getPlayers()const;
+        const std::vector<Player*>& getPlayers()const;
         Catan (Player player1,Player player2,Player player3,Player player4);
         Catan (Player player1,Player player2,Player player3);
         Catan (Player player1,Player player2);

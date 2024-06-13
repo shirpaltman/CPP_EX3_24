@@ -1,5 +1,6 @@
 #ifndef BOARD_HPP
 #define BOARD_HPP
+
 #include<vector>
 #include<string>
 #include<unordered_map>
@@ -10,14 +11,17 @@
 #include "Card.hpp"
 #include "Tile.hpp"
 #include "vertex.hpp"
-#include "catan.hpp"
+//#include "catan.hpp"
+
 
 using namespace std;
 namespace ariel{
 
+    class catan;
+    class Player;
     class Vertex;
     class Tile;
-    class Player;
+    
 
 
 
@@ -28,6 +32,7 @@ namespace ariel{
             Vertex* vertex1;
             Vertex* vertex2;
         public:
+            Edge() : vertex1(nullptr),vertex2(nullptr){}
             Edge(Vertex& v1,Vertex& v2):vertex1(&v1),vertex2(&v2){}
  
         Vertex* getVertex1()const{
@@ -49,7 +54,8 @@ namespace ariel{
         
     public:
     
-            Board() = default;
+            Board() noexcept;
+            
             void addRoad(const string& playerName,int location, Player& player);
             void addSettlement(const string& playerName,int location,const string& settlementType,Player& player);
             bool isSettelmentValid(int location,const Player& player)const;
@@ -58,17 +64,12 @@ namespace ariel{
             void printBoard()const;
             bool canPlaceSettelment(int place1,int place2,const Player& player)const;
             bool canPlaceRoad(int place1,int place2, const Player& player)const;
-            bool PlaceSettelment(int place1,int place2, Player& player);
-            bool PlaceRoad(int place1,int place2,  Player& player);
+            void placeSettelemnt(Player& player, const std::vector<std::string>& places, const std::vector<int>& placesNum);
+            void placeRoad(Player& player, const std::vector<std::string>& places, const std::vector<int>& placesNum);
             int getPoints()const;
-  
+            void allocateResources(int diceRoll);
+            void allocateInitialResources();
 
-
-
-
-
-};
+    };
 }
-
-
 #endif

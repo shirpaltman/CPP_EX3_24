@@ -21,50 +21,65 @@ int main()
     // Starting of the game. Every player places two settlements and two roads.
     catan.ChooseStartingPlayer(); // should print the name of the starting player, assume it is Amit.
     Board& board = catan.getBoard(); // get the board of the game.
+    board.printBoard();
 
     // p1 places two settlements and two roads
     vector<string> places1 = {"Forest", "Hills"};
     vector<int> placesNum1 = {5, 6};
-    p1.placeSettelemnt(places1, placesNum1, board);
-    p1.placeRoad(places1, placesNum1, board);
+    board.placeSettelemnt(p1, places1, placesNum1);
+    board.placeRoad(p1, places1, placesNum1);
 
     vector<string> places2 = {"Agricultural Land", "Desert"};
     vector<int> placesNum2 = {3, 4};
-    p1.placeSettelemnt(places2, placesNum2, board);
-    p1.placeRoad(places2, placesNum2, board);
+    board.placeSettelemnt(p1, places2, placesNum2);
+    board.placeRoad(p1, places2, placesNum2);
 
     // p2 places two settlements and two roads
     vector<string> places3 = {"Mountains", "Pasture Land"};
     vector<int> placesNum3 = {4, 9};
-    p2.placeSettelemnt(places3, placesNum3, board);
-    p2.placeRoad(places3, placesNum3, board);
+    board.placeSettelemnt(p2, places3, placesNum3);
+    board.placeRoad(p2, places3, placesNum3);
 
     try {
-        p3.placeSettelemnt(places3, placesNum3, board); // p3 tries to place a settlement in the same location as p2.
+        board.placeSettelemnt(p3, places3, placesNum3); // p3 tries to place a settlement in the same location as p2.
     } catch (const std::exception &e) {
         cout << e.what() << endl;
     }
 
     vector<string> places4 = {"Forest", "Pasture Land"};
     vector<int> placesNum4 = {5, 9};
-    p2.placeSettelemnt(places4, placesNum4, board);
-    p2.placeRoad(places4, placesNum4, board);
+    board.placeSettelemnt(p2, places4, placesNum4);
+    board.placeRoad(p2, places4, placesNum4);
 
     // p3 places two settlements and two roads
     vector<string> places5 = {"Mountains", "Pasture Land"};
     vector<int> placesNum5 = {3, 8};
-    p3.placeSettelemnt(places5, placesNum5, board);
-    p3.placeRoad(places5, placesNum5, board);
+    board.placeSettelemnt(p3, places5, placesNum5);
+    board.placeRoad(p3, places5, placesNum5);
 
     vector<string> places6 = {"Agricultural Land", "Pasture Land"};
     vector<int> placesNum6 = {3, 9};
-    p3.placeSettelemnt(places6, placesNum6, board);
-    p3.placeRoad(places6, placesNum6, board);
+    board.placeSettelemnt(p3, places6, placesNum6);
+    board.placeRoad(p3, places6, placesNum6);
 
     // Players take turns
     p1.rollDice(); // Let's say it prints 4. Then, p2 gets ore from the mountains.
-    p1.placeRoad(places1, placesNum1, board); // p1 continues to build a road.
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    p1.rollDice();
+    board.placeRoad(p1, places1, placesNum1); // p1 continues to build a road.
     p1.endTurn(); // p1 ends his turn.
+
 
     p2.rollDice(); // Let's say it prints 9. Then, p3 gets wool from the Pasture Land, p2 gets wool from the Pasture Land.
     p2.endTurn(); // p2 ends his turn.
@@ -90,4 +105,5 @@ int main()
     p2.printPoints(); // p2 has 3 points because he has two settlements and a bonus points card.
     p3.printPoints(); // p3 has 2
 
+    return 0;
 }
