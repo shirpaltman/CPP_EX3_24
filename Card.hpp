@@ -1,5 +1,7 @@
 #ifndef CARD_HPP
 #define CARD_HPP
+
+
 #include <string>
 #include <memory>
 #include <vector>
@@ -11,6 +13,9 @@
 
 using namespace std;
 namespace ariel{
+
+    class Player;
+    class Board;
     enum class CardType{
         Knight,
         Progress,
@@ -32,6 +37,7 @@ namespace ariel{
             CardType getType() const;
             virtual ~Card() = default;
             virtual string getDesc() const =0;
+            virtual void playEffect(Player& player, Board& board)=0;
 
             Card(const Card&) =delete;  //delete copy constructor
             Card& operator=(const Card&) =delete;   // delete the copy assignment operator
@@ -44,6 +50,8 @@ namespace ariel{
             public:
                 VictoryPointCard();
                 string getDesc() const override;
+                void playEffect(Player& player, Board& board)override;
+
 
                 VictoryPointCard(const VictoryPointCard&) = delete; // delete copy constructor
                 VictoryPointCard& operator=(const VictoryPointCard&) = delete; // delete copy assignment operator
@@ -56,6 +64,8 @@ namespace ariel{
             public:
                 KnightCard();
                 string getDesc() const override;
+                void playEffect(Player& player, Board& board)override;
+
                 KnightCard(const KnightCard&) = delete; // delete copy constructor
                 KnightCard& operator=(const KnightCard&) = delete; // delete copy assignment operator
                 KnightCard(KnightCard&&) = default; // default move constructor
@@ -65,9 +75,13 @@ namespace ariel{
         class ProgressCard : public Card{
             private:
             ProgressType progressType;
+            
+
             public:
                 ProgressCard(ProgressType type);
                 ProgressType getProgressType() const;
+                virtual void playEffect(Player& player, Board& board)override;
+
                 string getDesc() const override;
                 ProgressCard(const ProgressCard&) = delete; // delete copy constructor
                 ProgressCard& operator=(const ProgressCard&) = delete; // delete copy assignment operator

@@ -11,6 +11,7 @@
 #include "Card.hpp"
 #include "Tile.hpp"
 #include "vertex.hpp"
+
 //#include "catan.hpp"
 
 
@@ -58,6 +59,8 @@ namespace ariel{
         vector<Edge> edges;
         vector<Vertex> vertices;
         vector<Tile> tiles;
+        vector<Player*> players;
+     
         
     public:
     
@@ -75,10 +78,14 @@ namespace ariel{
             void placeSettlement(int vertex, Player& player);
             void placeRoad(int edge, Player& player);
             void allocateResources(int diceRoll);
+            int claimAllResources(Resources resource, Player& player);
             void allocateInitialResources();
             vector<Vertex>& getVertices();
             vector<Edge>& getEdges() ;
             vector<Tile>& getTiles();
+            void addPlayer(Player& player); // Add this method
+        
+           
     };
 }
 #endif

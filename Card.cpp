@@ -1,4 +1,6 @@
 #include "Card.hpp"
+#include "player.hpp"
+#include "board.hpp"
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -22,6 +24,11 @@ namespace ariel {
     string VictoryPointCard::getDesc() const {
         return "Victory Point Card";
     }
+    void VictoryPointCard::playEffect(Player& player, Board&) {
+        player.addPoints(1);
+        cout << player.getName() << " gained 1 Victory Point!" << endl;
+    }
+
 
     // KnightCard class
     KnightCard::KnightCard() : Card(CardType::Knight) {}
@@ -29,6 +36,11 @@ namespace ariel {
     string KnightCard::getDesc() const {
         return "Knight Card";
     }
+    void KnightCard::playEffect(Player& player, Board&) {
+        player.incrementKnightCount();
+        cout << player.getName() << " played a Knight Card!" << endl;
+    }
+
 
     // ProgressCard class
     ProgressCard::ProgressCard(ProgressType type) : Card(CardType::Progress), progressType(type) {}
@@ -47,6 +59,32 @@ namespace ariel {
                 return "Progress Card: Monopoly";
             default:
                 return "Unknown Progress Card";
+        }
+    }
+
+
+
+    void ProgressCard::playEffect(Player& player, Board& board) {
+        switch (progressType) {
+            case ProgressType::RoadBuilding: {
+                player.decrementRoads();
+                player.decrementRoads();
+                std::cout << player.getName() << " used Road Building to place 2 roads!" << std::endl;
+                break;
+            }
+            case ProgressType::YearOfPenlty: {
+                // Choose any 2 resources to add
+                player.addResource(Resources::Brick, 1);
+                player.addResource(Resources::Wheat, 1);
+                std::cout << player.getName() << " used Year of Plenty to gain 1 Brick and 1 Wheat!" << std::endl;
+                break;
+            }
+            case ProgressType::Monopoly: {
+                // Take all resources of a specific type from all other players
+                int total = board.claimAllResources(Resources::Brick, player);
+                std::cout << player.getName() << " used Monopoly to claim " << total << " Brick from all players!" << std::endl;
+                break;
+            }
         }
     }
 

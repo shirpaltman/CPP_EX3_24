@@ -78,7 +78,7 @@ namespace ariel{
     
     void Board::initializeBoard()
     {
-        Tile tile1 = Tile(Resources::Wood, 11,{Tile(Resources::Brick, 2),Tile(Resources::Wheat, 4),Tile(Resources::Ore, 5),Tile(Resources::Sea,0)});
+    Tile tile1 = Tile(Resources::Wood, 11,{Tile(Resources::Brick, 2),Tile(Resources::Wheat, 4),Tile(Resources::Ore, 5),Tile(Resources::Sea,0)});
     Tile tile2 = Tile(Resources::Brick, 2,{tile1,Tile(Resources::Ore, 5),Tile(Resources::Wood, 6),Tile(Resources::Sheep, 3),Tile(Resources::Sea,0)});
     Tile tile3 = Tile(Resources::Sheep, 3,{tile2,Tile(Resources::Ore, 5),Tile(Resources::Wood, 6),Tile(Resources::Brick, 11),Tile(Resources::Sea,0)});
     Tile tile4 = Tile(Resources::Wheat, 4,{tile1,Tile(Resources::Ore, 5),Tile(Resources::Wheat, 9),Tile(Resources::Sheep, 8)});
@@ -243,4 +243,23 @@ namespace ariel{
         return tiles;
     }
 
+    int Board::claimAllResources(Resources resource, Player& player) {
+        int totalResources = 0;
+        // Logic to claim all resources of the specified type from all players
+        for (auto* otherPlayer : players) {
+            if (otherPlayer != &player) {
+                int resourceCount = otherPlayer->getResource(resource);
+                otherPlayer->removeResource(resource, resourceCount);
+                player.addResource(resource, resourceCount);
+                totalResources += resourceCount;
+            }
+        }
+        return totalResources;
+    }
+
+
+    void Board::addPlayer(Player& player) {
+        players.push_back(&player);
+        std::cout << "Added player " << player.getName() << " to the board." << std::endl;
+    }
 }

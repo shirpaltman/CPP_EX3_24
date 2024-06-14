@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Tile.hpp"
+#include <memory>
 
 using namespace std;
 namespace ariel{
@@ -16,9 +17,10 @@ namespace ariel{
         
         public:
             
-            Vertex() :owner(""){}
+            Vertex() :owner(""){
+            }
             
-            ~Vertex() ;
+        
             
 
             void addAdjacentTile(Tile* tile) {
@@ -37,6 +39,14 @@ namespace ariel{
             const vector<Tile*>& getAdjacentTiles()const{
                 return adjTiles;
             }
+
+        ~Vertex() {
+            //Clean up dynamically allocated memory, if any
+            // for (auto *tile : adjTiles) {
+            //     delete tile;
+            // }
+            //cout << "Vertex destructor called" << endl;
+        } 
     };
 }
 #endif //VERTEX_HPP

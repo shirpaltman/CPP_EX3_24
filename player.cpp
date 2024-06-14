@@ -38,23 +38,29 @@ namespace ariel{
     }
         void Player::trade(Player &other,   string give, string get, int totalGive, int totalGet)
         {
+           
+
             Resources giveR = stringToResources(give);
             Resources getR = stringToResources(get);
-            if(resources[giveR] >= totalGive){
-                resources[giveR] -= totalGive;
-                other.resources[getR] += totalGet;
+
+            if(this->getResource(giveR)<totalGive){
+                cout << "You don't have enough " << give << " to trade." << endl;
+                return; 
             }
-            else{
-                throw invalid_argument("You don't have enough resources to trade");
+            if(other.getResource(getR)<totalGet){ 
+                cout << other.getName() << " doesn't have enough " << get << " to trade." << endl;
+                return;  
             }
-            if(other.resources[getR] >= totalGet){
-                other.resources[getR] += totalGet;
-                resources[giveR] -= totalGive;
-            }
-            else{
-                throw invalid_argument("The other player doesn't have enough resources to trade");
-            }       
+                this->resources[giveR] -= totalGive;
+                other.resources[getR] -= totalGet;
+
+                this->resources[getR] += totalGet;
+                other.resources[giveR] += totalGive;
+
+                cout << this->getName() << " traded " << totalGive << " " << give << " with " << other.getName() << " for " << totalGet << " " << get << "." << endl;
         }
+
+
         
         void Player::buyDevelopmentCard(Deck& deck){
             if(resources[Resources::Wheat] >= 1 && resources[Resources::Sheep] >= 1 && resources[Resources::Ore]){
@@ -114,13 +120,59 @@ namespace ariel{
         void Player::decrementSettlements(){
             settlements--;
         }
-        void Player::decrementRoads(){
-            roads--;
-        }
+       
         int Player::getSettlementCount()const{
             return settlements;
         }
         int Player::getRoadCount()const{
             return roads;
         }
+
+    void Player::incrementKnightCount() {
+        KnightCount++;
+    }
+
+  
+
+  Resources Player::randomResource() const {
+        std::vector<Resources> availableResources;
+
+        for (const auto& pair : resources) {
+            if (pair.second > 0) {
+                availableResources.push_back(pair.first);
+            }
+        }
+
+        if (!availableResources.empty()) {
+            size_t randomIndex = static_cast<size_t>(std::rand()) % availableResources.size();
+            return availableResources[randomIndex];
+        }
+
+        return Resources::None;
+    }
+
+    void Player::removeResource(Resources resource, int amount) {
+        if (resources[resource] >= amount) {
+            resources[resource] -= amount;
+        } else {
+            resources[resource] = 0;
+        }
+    }
+    void Player::decrementRoads() {
+        if (roads > 0) {
+            roads--;
+        }
+    }
+
+    void Player::addDevelopmentCard(Card* card) {
+        developmentCards.push_back(card);
+    }
+
+    const std::vector<Card*>& Player::getDevelopmentCards() const {
+        return developmentCards;
+    }
+    int Player::getKnightCount() const {
+        return KnightCount; 
+    }
+    
     }

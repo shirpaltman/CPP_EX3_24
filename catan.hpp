@@ -37,14 +37,13 @@ namespace ariel{
         Player& ChooseStartingPlayer();
         void addPlayer(Player* player);
         const std::vector<Player*>& getPlayers()const;
-        Catan (Player player1,Player player2,Player player3,Player player4);
-        Catan (Player player1,Player player2,Player player3);
-        Catan (Player player1,Player player2);
+        Catan (Player &player1,Player &player2,Player &player3);
         void checkForWinner();
         void rollDiceOfCurrentPlayer();
         size_t getPlayerByName(const string& name)const;
         void printAllResources()const;
-        ~Catan();
+        Player& getCurrentPlayer();
+        //~Catan();
     };
 }
 #endif // CATAN_HPP

@@ -5,6 +5,8 @@
 #include "resources.hpp"
 #include <unordered_map>
 #include "player.hpp"
+#include <memory>
+
 using namespace std;
 namespace ariel{
     class Tile{
@@ -27,6 +29,7 @@ namespace ariel{
             :resource_(resource),value_(value) {
                 vertices_ = myver;
                 value_ =value;
+                      
           
         }
 
@@ -51,11 +54,9 @@ namespace ariel{
         }        
 
         ~Tile(){
-            for(auto& tile : adjTiles_){
-                delete tile;
-            }
-        }  
 
+        }
+     
         
       
     };

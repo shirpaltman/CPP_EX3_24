@@ -15,7 +15,8 @@ namespace ariel{
         Ore,
         Sheep,
         Desert,
-        Sea
+        Sea,
+        None
     };
 
 
@@ -27,7 +28,8 @@ namespace ariel{
             {"Sheep", Resources::Sheep},
             {"Wheat", Resources::Wheat},
             {"Desert", Resources::Desert},
-            {"Sea", Resources:: Sea}
+            {"Sea", Resources:: Sea},
+            {"None", Resources::None}
 
         }; 
        if(mapResources.find(Resourcestring)!=mapResources.end()){
@@ -49,6 +51,7 @@ namespace ariel{
             case Resources::Wheat:return "Wheat";
             case Resources::Desert:return "Desert";
             case Resources::Sea:return "Sea";
+            case Resources::None:return "None";
             default:return "Unknown";
         }
     }

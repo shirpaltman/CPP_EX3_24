@@ -22,10 +22,12 @@ namespace ariel{
         private:
         string name;
         int playerPoints;
+        int KnightCount;
         bool isPlaying;
         unordered_map<Resources,int> resources;
         //vector<unique_ptr<Card>> deck;
         vector<Card*> developmentCards;
+        
         
         int settlements;
         int roads;
@@ -53,12 +55,19 @@ namespace ariel{
         void addResource(Resources resource,int amount){
             resources[resource] += amount;
         }
+        void removeResource(Resources resource, int amount);
+        void incrementKnightCount();
+        Resources randomResource() const;
         bool getIsPlaying()const;
         void setIsPlaying(bool playing);
         void decrementSettlements();
         void decrementRoads();
         int getSettlementCount() const;
         int getRoadCount() const;
+        void addDevelopmentCard(Card* card);
+        const std::vector<Card*>& getDevelopmentCards() const;
+        int getKnightCount() const;
+
   
     };   
 }

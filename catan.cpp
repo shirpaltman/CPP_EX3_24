@@ -7,44 +7,27 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include "board.hpp"
 
 
 using namespace std;
 namespace ariel{
 
-    Catan::Catan(Player player1,Player player2,Player player3,Player player4){
-        players.push_back( new Player (move(player1)));
-        players.push_back(new Player (move(player2)));
-        players.push_back(new Player(move(player3)));
-        players.push_back(new Player(move(player4)));
-        currentPlayer=0;
-    } 
-    Catan::Catan(Player player1,Player player2,Player player3){
-        players.push_back(new Player(move(player1)));
-        players.push_back( new Player(move(player2)));
-        players.push_back(new Player(move(player3)));
-        currentPlayer=0;
+    
+    Catan::Catan(Player& p1, Player& p2, Player& p3) : board() {
+        board.addPlayer(p1);
+        board.addPlayer(p2);
+        board.addPlayer(p3);
+
+        players.push_back(&p1);
+        players.push_back(&p2);
+        players.push_back(&p3);
     }                             
 
-    Catan::Catan(Player player1,Player player2){
-        players.push_back(new Player(move(player1)));
-        players.push_back(new Player(move(player2)));
-        currentPlayer=0;
-    }
+    
 
-    Catan ::~Catan(){
-        for (auto &player : players) {
-            delete player;
-        }
-    }
-    void Catan::checkForWinner(){
-        for(const auto& player : players){
-            if(player->getPlayerPoints() >= 10){
-                cout << " The winner is  " << player->getName() << endl;
-                break;
-            }
-        }
-    }
+  
+  
 
    
 
@@ -86,6 +69,7 @@ namespace ariel{
     void Catan::printWinner(){
          for(const auto& player : players){
             if(player->getPlayerPoints() >= 10){
+                cout << player->getPlayerPoints() <<endl;
                 cout << " The winner is  " << player->getName() << endl;
                 return;
             }
@@ -117,6 +101,9 @@ namespace ariel{
         for (const auto& player : players) {
             player->printResources();
         }
+    }
+        Player& Catan::getCurrentPlayer() {
+        return *players[static_cast<size_t>(currentPlayer)];
     }
 
 

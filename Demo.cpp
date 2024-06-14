@@ -17,6 +17,9 @@ int main() {
     Player p2("Yossi");
     Player p3("Dana");
     Catan catan(p1, p2, p3);
+    catan.addPlayer(&p1);
+    catan.addPlayer(&p2);
+    catan.addPlayer(&p3);
 
     // Starting of the game. Every player places two settlements and two roads.
     catan.ChooseStartingPlayer(); // should print the name of the starting player, assume it is Amit.
@@ -75,11 +78,69 @@ int main() {
     board.allocateResources(roll);
     p2.endTurn();
 
+    p1.printResources();
+    p2.printResources();
+    p3.printResources();
+  
+
+  // Players gather resources
+    p1.addResource(Resources::Ore, 1);
+    p1.addResource(Resources::Wheat, 1);
+    p1.addResource(Resources::Sheep, 1);
+
+    // Player 1 buys development cards
+    try {
+        p1.buyDevelopmentCard(deck);
+        p1.buyDevelopmentCard(deck);
+        p1.buyDevelopmentCard(deck);
+    } catch (const std::exception &e) {
+        cout << e.what() << endl;
+    }
+
+
+
+        // Player 1 plays development cards
+    for (Card* card : p1.getDevelopmentCards()) {
+        if (card->getType() == CardType::VictoryPoint) {
+            cout << "Victory Point card played!" << endl;
+            p1.addPoints(1);
+        } else if (card->getType() == CardType::Knight) {
+            cout << "Knight card played!" << endl;
+            static_cast<KnightCard*>(card)->playEffect(p1, board);
+        } else if (card->getType() == CardType::Progress) {
+            ProgressCard* progressCard = static_cast<ProgressCard*>(card);
+            if (progressCard->getProgressType() == ProgressType::RoadBuilding) {
+                cout << "Road Building card played!" << endl;
+                // Logic for placing 2 roads
+            } else if (progressCard->getProgressType() == ProgressType::YearOfPenlty) {
+                cout << "Year of Plenty card played!" << endl;
+                // Logic for drawing 2 resource cards of choice
+            } else if (progressCard->getProgressType() == ProgressType::Monopoly) {
+                cout << "Monopoly card played!" << endl;
+                // Logic for claiming all resource cards of a specific type
+            }
+        }
+    }
+   
+        p1.trade(p2, "Brick", "Wood", 2, 2);
+  
+    p1.printResources();
+    p2.printResources();
+    p3.printResources();
+
+
+   
+
     p1.addResource(Resources::Brick,30);
     p1.addResource(Resources::Wood,30);
     p1.addResource(Resources::Sheep,30);
     p1.addResource(Resources::Wheat,30);
     p1.addResource(Resources::Ore,30);
+
+
+
+    
+
     
     p1.buyDevelopmentCard(deck);
     p1.buyDevelopmentCard(deck);
@@ -89,10 +150,10 @@ int main() {
     p1.buyDevelopmentCard(deck);
     p1.buyDevelopmentCard(deck);
 
-    catan.checkForWinner();
+    catan.printWinner();
     p1.addPoints(10); // Giving p1 10 points to win the game
 
-    catan.checkForWinner();
+    catan.printWinner();
     
     p1.printPoints();
     p2.printPoints();
@@ -101,8 +162,8 @@ int main() {
     p1.printResources();
     p2.printResources();
     p3.printResources();
-    cout << "test" << endl;
-
+    cout << "test" << endl;    
+    cout << "End of the game." << endl;
 
     return 0;
 }
