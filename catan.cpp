@@ -24,7 +24,7 @@ namespace ariel{
         players.push_back( new Player(move(player2)));
         players.push_back(new Player(move(player3)));
         currentPlayer=0;
-    } 
+    }                             
 
     Catan::Catan(Player player1,Player player2){
         players.push_back(new Player(move(player1)));
@@ -45,6 +45,30 @@ namespace ariel{
             }
         }
     }
+
+   
+
+    size_t Catan::getPlayerByName(const string &name) const
+    {
+        for(size_t i=0; i<players.size();++i){
+            if(players[i]->getName() == name){
+                return i;
+            }
+        }
+        throw invalid_argument("Player not found");
+    }
+     void Catan::rollDiceOfCurrentPlayer()
+    {
+        size_t i = getPlayerByName(players[static_cast<size_t>(currentPlayer)]->getName());
+        Player& currentPlayerR = *players[static_cast<size_t>(currentPlayer)];
+        int roll = currentPlayerR.rollDice();
+        cout << currentPlayerR.getName() << " rolled a " << roll << endl;
+        board.allocateResources(roll);
+        printAllResources();
+        nextTurn();
+    }
+
+    
 
     void Catan::ChooseStartP(){
         // random_device rd;
@@ -71,7 +95,7 @@ namespace ariel{
     void Catan::printGameStatus() const{
         cout << "Current game status: " << endl;
         for (const auto& player : players){
-            cout<< player ->getName()<< "has" << player->getPlayerPoints() << "points"  << endl;
+            cout<< player ->getName()<< " has" << player->getPlayerPoints() << "points"  << endl;
         }
     }
 
@@ -87,7 +111,15 @@ namespace ariel{
     }
     const vector<Player*> &Catan::getPlayers() const{
         return players;
+    }  
+
+    void Catan::printAllResources() const {
+        for (const auto& player : players) {
+            player->printResources();
+        }
     }
+
+
 
     
 }

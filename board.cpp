@@ -159,10 +159,7 @@ namespace ariel{
         }
     }
 
-    
-
-    
-    
+       
     bool Board::canPlaceSettelment(int place1, int place2, const Player &player) const
     {
         return isSettelmentValid(place1,player) && isSettelmentValid(place2,player);
@@ -173,43 +170,52 @@ namespace ariel{
     }
 
 
-    void Board::placeSettelemnt(Player& player, const vector<string>& places, const vector<int>& placesNum) {
-        if (places.size() != placesNum.size()) {
-            throw invalid_argument("places and placesNum vectors must be of the same size");
+    void Board::placeSettlement(int vertex, Player& player) {
+        size_t u = static_cast<size_t>(vertex);
+        if (!vertices[u].getOwner().empty()) {
+            throw invalid_argument("This vertex is already occupied");
         }
+        if (player.getSettlementCount() == 0) {
+            cout << "No settlements to place" << endl;
+            return;
+        }
+        vertices[u].setOwner(player.getName());
+        player.decrementSettlements();
+        cout << player.getName() << " placed a settlement at vertex " << u << endl;
 
-        for (size_t i = 0; i < places.size(); ++i) {
-            addSettlement(player.getName(), placesNum[i], "Settlement", player);
-        }
     }
 
-    void Board::placeRoad(Player& player, const vector<string>& places, const vector<int>& placesNum) {
-        if (places.size() != placesNum.size()) {
-            throw invalid_argument("places and placesNum vectors must be of the same size");
+    void Board::placeRoad(int edge, Player& player) {
+        size_t u = static_cast<size_t>(edge);
+        if (player.getRoadCount() == 0) {
+            cout << "No roads to place" << endl;
+            return;
         }
-
-        for (size_t i = 0; i < places.size(); ++i) {
-            addRoad(player.getName(), placesNum[i], player);
+        if (!edges[u].getOwner().empty()) {
+            cout << "Place is taken by " << edges[u].getOwner() << endl;
+            return;
         }
+        edges[u].setOwner(player.getName());
+        player.decrementRoads();
+        cout << player.getName() << " placed a road at edge " << edge << endl;
     }
   
-    int Board::getPoints() const
-    {
-        /////////////////TO DO!!!!!
-        return 0;
-    }
+    
     void ariel::Board::allocateResources(int diceRoll)
     {
-        for (const auto& tile : tiles) {
+        for (auto& tile : tiles) {
             if (tile.getValue() == diceRoll) {
-                for (const auto& settlement : tile.getSettlements()) {
-                    Player* player = settlement.second.first;
-                    const string& type = settlement.second.second;
-                    int amount = (type == "City") ? 2 : 1;
-                    player->addResource(tile.getResource(), amount);
+                for (const auto& [vertex, settlement] : tile.getSettlements()) {
+                    Player* player = settlement.first;
+                    string type = settlement.second;
+                    if (type == "Settlement") {
+                        player->addResource(tile.getResource(), 1);
+                    } else if (type == "City") {
+                        player->addResource(tile.getResource(), 2);
+                    }
                 }
             }
-        }   
+        }  
     }
     void ariel::Board::allocateInitialResources()
     {
@@ -223,6 +229,18 @@ namespace ariel{
             }
         }   
     }
-}
-
+    vector<Vertex> &Board::getVertices() 
+    {
+        return vertices;
+    }
     
+    vector<Edge>& Board::getEdges() {
+
+        return edges;
+    }
+
+    vector<Tile>& Board::getTiles() {
+        return tiles;
+    }
+
+}

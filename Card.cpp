@@ -55,18 +55,24 @@ namespace ariel {
         // Initialize the deck with cards
          initialize();
     }
+
+    Deck::~Deck() {
+        for (auto card : cards) {
+            delete card;
+        }
+    }
     void Deck::initialize() {
         //Typically, there are 25 development cards: 14 Knight Cards, 6 Progress Cards, and 5 Victory Point Cards.
         for (int i = 0; i < 14; ++i) {
-            cards.emplace_back( new KnightCard());
+            cards.emplace_back(  new KnightCard());
         }
         for (int i = 0; i < 2; ++i) {
             cards.emplace_back( new ProgressCard(ProgressType::RoadBuilding));
-            cards.emplace_back( new ProgressCard(ProgressType::YearOfPenlty));
-            cards.emplace_back( new ProgressCard(ProgressType::Monopoly));
+            cards.emplace_back(  new ProgressCard(ProgressType::YearOfPenlty));
+            cards.emplace_back(  new ProgressCard(ProgressType::Monopoly));
         }
         for (int i = 0; i < 5; ++i) {
-            cards.emplace_back( new VictoryPointCard());
+            cards.emplace_back(  new VictoryPointCard());
         }
     }
 

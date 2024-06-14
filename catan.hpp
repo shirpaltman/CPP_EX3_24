@@ -23,7 +23,7 @@ namespace ariel{
 
     class Catan{
     private:
-        std::vector<Player*> players;  //check?
+        vector<Player*> players;  //check?
         Board board;
         int currentPlayer;
     public:
@@ -41,6 +41,9 @@ namespace ariel{
         Catan (Player player1,Player player2,Player player3);
         Catan (Player player1,Player player2);
         void checkForWinner();
+        void rollDiceOfCurrentPlayer();
+        size_t getPlayerByName(const string& name)const;
+        void printAllResources()const;
         ~Catan();
     };
 }

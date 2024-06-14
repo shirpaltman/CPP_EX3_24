@@ -15,14 +15,14 @@ using namespace std;
 
 namespace ariel{
     
-    //class Deck;
+    class Deck;
     class Board;
    
     class Player{
         private:
         string name;
         int playerPoints;
-        bool turn;
+        bool isPlaying;
         unordered_map<Resources,int> resources;
         //vector<unique_ptr<Card>> deck;
         vector<Card*> developmentCards;
@@ -33,6 +33,7 @@ namespace ariel{
 
         public:
         Player( const string& name) ;
+        ~Player();
         string getName() const;
         void addPoints(int amount){
             playerPoints += amount;
@@ -52,6 +53,13 @@ namespace ariel{
         void addResource(Resources resource,int amount){
             resources[resource] += amount;
         }
+        bool getIsPlaying()const;
+        void setIsPlaying(bool playing);
+        void decrementSettlements();
+        void decrementRoads();
+        int getSettlementCount() const;
+        int getRoadCount() const;
+  
     };   
 }
 #endif 

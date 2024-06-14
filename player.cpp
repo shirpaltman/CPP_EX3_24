@@ -17,21 +17,25 @@ namespace ariel{
 
         }
 
-      
-     
-        int Player::rollDice() const
-        {
-            static random_device rd;  // Non-deterministic generator
-            static mt19937 gen(rd()); // Mersenne Twister engine
-            static uniform_int_distribution<> dis(1, 6);
-            int check= dis(gen) + dis(gen);
-            cout<< check<<endl;
-            return check ;
+     Player::~Player() {
+        for (Card* card : developmentCards) {
+            delete card;
         }
-        void Player::endTurn()
-        {
-            cout<<name<< " has ended their turn" <<endl;
+    } 
+
+    
+    int Player::rollDice() const{
+        static random_device rd;  // Non-deterministic generator
+        static mt19937 gen(rd()); // Mersenne Twister engine
+        static uniform_int_distribution<> dis(1, 6);
+        int check= dis(gen) + dis(gen);
+        cout<< check<<endl;
+        return check ;
         }
+    void Player::endTurn()
+    {
+        cout<<name<< " has ended their turn" <<endl;
+    }
         void Player::trade(Player &other,   string give, string get, int totalGive, int totalGet)
         {
             Resources giveR = stringToResources(give);
@@ -58,7 +62,7 @@ namespace ariel{
                     resources[Resources::Wheat]--;    
                     resources[Resources::Ore]--;
                     resources[Resources::Sheep]--;
-                    this->developmentCards.push_back(deck.drawCard());
+                    developmentCards.push_back(deck.drawCard());
                 }
                 else{
                     throw invalid_argument("there are no more cards in the deck");
@@ -72,11 +76,12 @@ namespace ariel{
         
         void Player::printPoints() const
         {
+            cout << name << " has " << playerPoints << " points" << endl;
         }
         void Player::printResources() const{
             cout << "Player " << name << " Resources:" << endl;
             for(const auto& resource:resources){
-                cout << static_cast<int>(resource.first) << ": " <<", Amount: "  << resource.second << endl;
+                cout << toString(resource.first) << ": " <<", Amount: "  << resource.second << endl;
 
             }
         }
@@ -97,4 +102,25 @@ namespace ariel{
             }
             return 0;
         }
-}
+        bool Player::getIsPlaying() const
+        {
+            return isPlaying;
+        }
+
+        void Player::setIsPlaying(bool flag){
+            isPlaying = flag;
+        
+        }
+        void Player::decrementSettlements(){
+            settlements--;
+        }
+        void Player::decrementRoads(){
+            roads--;
+        }
+        int Player::getSettlementCount()const{
+            return settlements;
+        }
+        int Player::getRoadCount()const{
+            return roads;
+        }
+    }

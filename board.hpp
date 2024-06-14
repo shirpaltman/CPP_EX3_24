@@ -31,15 +31,22 @@ namespace ariel{
         private:
             Vertex* vertex1;
             Vertex* vertex2;
+            string owner;
         public:
-            Edge() : vertex1(nullptr),vertex2(nullptr){}
-            Edge(Vertex& v1,Vertex& v2):vertex1(&v1),vertex2(&v2){}
+            Edge() : vertex1(nullptr),vertex2(nullptr),owner(""){}
+            Edge(Vertex& v1,Vertex& v2):vertex1(&v1),vertex2(&v2),owner(""){}
  
         Vertex* getVertex1()const{
             return vertex1;
         }
         Vertex* getVertex2()const{
             return vertex2;
+        }
+        const string& getOwner() const{
+            return owner;
+        }
+        void setOwner(const string& owner){
+            this->owner = owner;
         }
     };
     class Board{
@@ -56,6 +63,7 @@ namespace ariel{
     
             Board() noexcept;
             
+            
             void addRoad(const string& playerName,int location, Player& player);
             void addSettlement(const string& playerName,int location,const string& settlementType,Player& player);
             bool isSettelmentValid(int location,const Player& player)const;
@@ -64,12 +72,13 @@ namespace ariel{
             void printBoard()const;
             bool canPlaceSettelment(int place1,int place2,const Player& player)const;
             bool canPlaceRoad(int place1,int place2, const Player& player)const;
-            void placeSettelemnt(Player& player, const std::vector<std::string>& places, const std::vector<int>& placesNum);
-            void placeRoad(Player& player, const std::vector<std::string>& places, const std::vector<int>& placesNum);
-            int getPoints()const;
+            void placeSettlement(int vertex, Player& player);
+            void placeRoad(int edge, Player& player);
             void allocateResources(int diceRoll);
             void allocateInitialResources();
-
+            vector<Vertex>& getVertices();
+            vector<Edge>& getEdges() ;
+            vector<Tile>& getTiles();
     };
 }
 #endif

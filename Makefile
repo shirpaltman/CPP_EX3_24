@@ -1,7 +1,6 @@
 CXX = clang++
 CXXFLAGS = -std=c++17 -Werror -Wsign-conversion
-VALGRIND_FLAGS = -v --leak-kinds=all --error-exitcode=99
-
+VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
 TARGET= catan
 DEMO_TARGET= demo
 
@@ -26,5 +25,10 @@ $(DEMO_TARGET):$(OBJS)
 clean:
 	rm -f $(OBJS )$(TARGET) $(DEMO_TARGET)
 
-.PHONY: all clean
+valgrind: $(DEMO_TARGET)
+	valgrind $(VALGRIND_FLAGS) ./$(DEMO_TARGET)
+
+
+
+.PHONY: all clean valgrind
 

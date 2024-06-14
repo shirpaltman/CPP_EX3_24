@@ -79,8 +79,10 @@ namespace ariel{
             private:
                 vector<Card*> cards;
                 default_random_engine randomCards;
+
             public:
                 Deck();
+                ~Deck();
                 void initialize();
                 void shuffle();
                 Card* drawCard();
@@ -93,11 +95,7 @@ namespace ariel{
                 Deck(Deck&&) = default; // default move constructor
                 Deck& operator=(Deck&&) = default; // default move assignment operator
 
-                ~Deck(){
-                    for(auto card : cards){
-                        delete card;
-                    }
-                }
+
         };
 }
 #endif // CARD_HPP
