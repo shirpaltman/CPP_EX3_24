@@ -1,64 +1,64 @@
 #ifndef TILE_HPP
 #define TILE_HPP
-
 #include <vector>
 #include "resources.hpp"
 #include <unordered_map>
 #include "player.hpp"
 #include <memory>
 
+
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
 using namespace std;
-namespace ariel{
-    class Tile{
-   
+
+namespace ariel {
+    
+    class Tile {
     private:
-
-        Resources resource_;
-        int value_;
-        vector<Tile*> adjTiles_;
-        vector<int> vertices_;
-        unordered_map <int,pair<Player*, string>> settlements_;
-
-
+        Resources resource_;  // Resource type of the tile
+        int value_;           // Value of the tile, used for resource allocation
+        vector<Tile*> adjTiles_;  // Adjacent tiles
+        vector<int> vertices_;    // Vertices associated with the tile
+        unordered_map<int, pair<Player*, string>> settlements_;  // Settlements on the tile, mapping vertex to player and settlement type
 
     public:
-        
-
-
-        Tile(Resources resource,int value=0,initializer_list<Tile> adjTiles={},vector<int>myver={})
-            :resource_(resource),value_(value) {
-                vertices_ = myver;
-                value_ =value;
-                      
-          
+        // Constructor to initialize tile with resource type, value, adjacent tiles, and vertices
+        Tile(Resources resource, int value = 0, initializer_list<Tile> adjTiles = {}, vector<int> myver = {})
+            : resource_(resource), value_(value) {
+            vertices_ = myver;
         }
 
-        
-        int getValue()const {
+        // Getter for tile value
+        int getValue() const {
             return value_;
         }
 
-        Resources getResource()const{
+        // Getter for tile resource type
+        Resources getResource() const {
             return resource_;
         }
-        const unordered_map<int,pair<Player*,string>>& getSettlements() const{
+
+        // Getter for settlements on the tile
+        const unordered_map<int, pair<Player*, string>>& getSettlements() const {
             return settlements_;
         }
 
-        void addSettlement(int vertex,Player* player,const string& type){
-            settlements_[vertex] = make_pair(player,type);
+        // Add a settlement to the tile
+        void addSettlement(int vertex, Player* player, const string& type) {
+            settlements_[vertex] = make_pair(player, type);
         }
 
+        // Add an adjacent tile
         void addAdjacentTile(Tile* tile) {
             adjTiles_.push_back(tile);
-        }        
-
-        ~Tile(){
-
         }
-     
-        
-      
+
+        // Destructor (no specific cleanup needed)
+        ~Tile() {}
     };
 }
+
 #endif

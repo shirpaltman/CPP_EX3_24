@@ -1,3 +1,11 @@
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
+
+
+
 #include "Card.hpp"
 #include "player.hpp"
 #include "board.hpp"
@@ -12,14 +20,14 @@
 namespace ariel {
 
     // Cards class
-    Card::Card(CardType type) : type(type) {}
+    
 
     CardType Card::getType() const {
         return type;
     }
 
     // VictoryPointCard class
-    VictoryPointCard::VictoryPointCard() : Card(CardType::VictoryPoint) {}
+    
 
     string VictoryPointCard::getDesc() const {
         return "Victory Point Card";
@@ -31,23 +39,20 @@ namespace ariel {
 
 
     // KnightCard class
-    KnightCard::KnightCard() : Card(CardType::Knight) {}
+    
 
     string KnightCard::getDesc() const {
         return "Knight Card";
     }
-    void KnightCard::playEffect(Player& player, Board&) {
+    void KnightCard::playEffect(Player& player, Board& board) {
         player.incrementKnightCount();
         cout << player.getName() << " played a Knight Card!" << endl;
     }
 
 
     // ProgressCard class
-    ProgressCard::ProgressCard(ProgressType type) : Card(CardType::Progress), progressType(type) {}
 
-    ProgressType ProgressCard::getProgressType() const {
-        return progressType;
-    }
+    
 
     string ProgressCard::getDesc() const {
         switch(progressType) {
@@ -64,26 +69,16 @@ namespace ariel {
 
 
 
-    void ProgressCard::playEffect(Player& player, Board& board) {
+    void ProgressCard::playEffect(Player& player, Board& board ) {
         switch (progressType) {
             case ProgressType::RoadBuilding: {
-                player.decrementRoads();
-                player.decrementRoads();
-                std::cout << player.getName() << " used Road Building to place 2 roads!" << std::endl;
-                break;
+               
             }
             case ProgressType::YearOfPenlty: {
-                // Choose any 2 resources to add
-                player.addResource(Resources::Brick, 1);
-                player.addResource(Resources::Wheat, 1);
-                std::cout << player.getName() << " used Year of Plenty to gain 1 Brick and 1 Wheat!" << std::endl;
-                break;
+              
             }
             case ProgressType::Monopoly: {
-                // Take all resources of a specific type from all other players
-                int total = board.claimAllResources(Resources::Brick, player);
-                std::cout << player.getName() << " used Monopoly to claim " << total << " Brick from all players!" << std::endl;
-                break;
+                
             }
         }
     }
@@ -92,26 +87,91 @@ namespace ariel {
     Deck::Deck() {
         // Initialize the deck with cards
          initialize();
+         shuffle();
     }
 
     Deck::~Deck() {
         for (auto card : cards) {
             delete card;
         }
+        
     }
     void Deck::initialize() {
+        cards.clear();
+
+
+     
+        
+
+
         //Typically, there are 25 development cards: 14 Knight Cards, 6 Progress Cards, and 5 Victory Point Cards.
         for (int i = 0; i < 14; ++i) {
             cards.emplace_back(  new KnightCard());
         }
+        // Adding Monopoly Cards
         for (int i = 0; i < 2; ++i) {
-            cards.emplace_back( new ProgressCard(ProgressType::RoadBuilding));
-            cards.emplace_back(  new ProgressCard(ProgressType::YearOfPenlty));
-            cards.emplace_back(  new ProgressCard(ProgressType::Monopoly));
+            cards.emplace_back(new MonopolyCard([](Player& player) {
+                return player.chooseResourceToClaim(); // Assuming chooseResourceToClaim is implemented in Player
+            }));
         }
+
+        // Adding Year of Plenty Cards
+        for (int i = 0; i < 2; ++i) {
+            cards.emplace_back(new YearOfPlentyCard(
+                [](Player& player) { return player.chooseResource(); }, // Assuming chooseResource is implemented in Player
+                [](Player& player) { return player.chooseResource(); }
+            ));
+        }
+        // Create Road Building cards
+        for (int i = 0; i < 2; ++i) {
+            cards.emplace_back(new RoadBuildingCard());
+        }
+        
         for (int i = 0; i < 5; ++i) {
             cards.emplace_back(  new VictoryPointCard());
-        }
+    
+    }
+    }
+
+
+
+    void MonopolyCard::playEffect(Player& player, Board& board) {
+        Resources resourceToClaim = resourceChooser(player);  
+        int totalClaimed = board.claimAllResources(resourceToClaim, player);  
+        cout << player.getName() << " used Monopoly to claim " << totalClaimed << " " << toString(resourceToClaim) << " from all players!" << endl;
+    }
+
+    string MonopolyCard::getDesc() const {
+        return "Monopoly Card: Claim all of one type of resource from all players.";
+    }
+
+    // YearOfPlentyCard Implementation
+
+    void YearOfPlentyCard::playEffect(Player& player, Board& board) {
+        Resources resource1 = resourceChooser1(player);
+        Resources resource2 = resourceChooser2(player);
+        player.addResource(resource1, 1);
+        player.addResource(resource2, 1);
+        std::cout << player.getName() << " used Year of Plenty to gain 1 " 
+                  << toString(resource1) << " and 1 " << toString(resource2) << "!" << std::endl;
+    }
+    string YearOfPlentyCard::getDesc() const {
+        return "Year of Plenty Card: Take any two resources from the bank.";
+    }
+
+    // RoadBuildingCard Implementation
+    RoadBuildingCard::RoadBuildingCard() : ProgressCard(ProgressType::RoadBuilding) {}
+
+    void RoadBuildingCard::playEffect(Player& player, Board& board) {
+        int road1 = player.chooseRoadLocation();  // Assuming this method is defined in Player
+        int road2 = player.chooseRoadLocation();  // Assuming this method is defined in Player
+        board.placeRoad(road1, player);  // Assuming this method is defined in Board
+        board.placeRoad(road2, player);  // Assuming this method is defined in Board
+        cout << player.getName() << " used Road Building to place roads at " << road1 << " and " << road2 << "!" << endl;
+    }
+
+    string RoadBuildingCard::getDesc() const {
+        return "Road Building Card: Place two new roads as if you had just built them.";
     }
 
     
@@ -125,7 +185,7 @@ namespace ariel {
     }
     Card* Deck::drawCard() {
         if(isEmpty()) {
-            throw runtime_error("no cards left in the deck"); // No cards left in the deck
+            return nullptr;
         }
         Card* topCard =cards.back();
         cards.pop_back();
@@ -136,3 +196,4 @@ namespace ariel {
         return cards.empty();
     }
 }
+

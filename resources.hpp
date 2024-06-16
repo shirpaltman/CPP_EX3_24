@@ -1,3 +1,10 @@
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
+
+
 #ifndef RESOURCES_HPP
 #define RESOURCES_HPP
 #include <unordered_map>

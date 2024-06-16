@@ -1,7 +1,8 @@
-/**
- * Demo file for Ex3.
- *
- */
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -90,9 +91,9 @@ int main() {
 
     // Player 1 buys development cards
     try {
-        p1.buyDevelopmentCard(deck);
-        p1.buyDevelopmentCard(deck);
-        p1.buyDevelopmentCard(deck);
+        p1.buyDevelopmentCard(deck,board);
+        p1.buyDevelopmentCard(deck,board);
+        p1.buyDevelopmentCard(deck,board);
     } catch (const std::exception &e) {
         cout << e.what() << endl;
     }
@@ -142,13 +143,13 @@ int main() {
     
 
     
-    p1.buyDevelopmentCard(deck);
-    p1.buyDevelopmentCard(deck);
-    p1.buyDevelopmentCard(deck);
-    p1.buyDevelopmentCard(deck);
-    p1.buyDevelopmentCard(deck);
-    p1.buyDevelopmentCard(deck);
-    p1.buyDevelopmentCard(deck);
+    p1.buyDevelopmentCard(deck,board);
+    p1.buyDevelopmentCard(deck,board);
+    p1.buyDevelopmentCard(deck,board);
+    p1.buyDevelopmentCard(deck,board);
+    p1.buyDevelopmentCard(deck,board);
+    p1.buyDevelopmentCard(deck,board);
+    p1.buyDevelopmentCard(deck,board);
 
     catan.printWinner();
     p1.addPoints(10); // Giving p1 10 points to win the game

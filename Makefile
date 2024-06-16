@@ -1,38 +1,40 @@
-CXX = clang++
-CXXFLAGS = -std=c++17 -Werror -Wsign-conversion -g
-VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose
-TARGET= catan
-DEMO_TARGET= demo
 
-SRCS =  Demo.cpp catan.cpp player.cpp board.cpp Card.cpp Tile.cpp vertex.cpp TestCounter.cpp Test.cpp
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
+CXX = clang++
+CXXFLAGS =  -std=c++17 -Werror -Wsign-conversion -g
+VALGRIND_FLAGS = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./demo--track-origins=yes --verbose
+
+DEMO_TARGET= demo
+TEST_TARGET= test
+
+SRCS = catan.cpp player.cpp board.cpp Card.cpp 
+DEMO_SRCS = Demo.cpp
+TEST_SRCS = TestCounter.cpp Test.cpp
+
 OBJS = $(SRCS:.cpp=.o)
+DEMO_OBJS = $(DEMO_SRCS:.cpp=.o)
+TEST_OBJS = $(TEST_SRCS:.cpp=.o)
 DEPS = catan.hpp player.hpp board.hpp Card.hpp resources.hpp
 
+all: $(DEMO_TARGET) $(TEST_TARGET)
 
-all:$(TARGET) $(DEMO_TARGET)
+$(DEMO_TARGET): $(DEMO_OBJS) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(DEMO_TARGET) $(DEMO_OBJS) $(OBJS)
 
-$(TARGET):$(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
-
-$(DEMO_TARGET):$(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(DEMO_TARGET) $(OBJS)
-
-test: TestCounter.o Test.o $(filter-out Demo.o, $(OBJECTS))
-	$(CXX) $(CXXFLAGS) -v $^ -o $@
-
-
+$(TEST_TARGET): $(TEST_OBJS) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(TEST_TARGET) $(TEST_OBJS) $(OBJS)
 
 %.o: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-	
-	
-clean:
-	rm -f $(OBJS )$(TARGET) $(DEMO_TARGET)
 
-valgrind: $(DEMO_TARGET) 
+clean:
+	rm -f *.o $(DEMO_TARGET) $(TEST_TARGET)
+
+valgrind: $(DEMO_TARGET)
 	valgrind $(VALGRIND_FLAGS) ./$(DEMO_TARGET)
 
-
-
-.PHONY: all clean valgrind test
-
+.PHONY: all clean valgrind

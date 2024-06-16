@@ -1,3 +1,11 @@
+
+
+
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
 #ifndef CATAN_HPP
 #define CATAN_HPP
 

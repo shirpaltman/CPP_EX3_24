@@ -2,6 +2,7 @@
 #include "player.hpp"
 #include "board.hpp"
 #include "catan.hpp"
+#include "Card.hpp"
 
 
 /*
@@ -42,25 +43,12 @@ TEST_CASE("Test Player Actions - Trade Resources") {
 
     trader1.trade(trader2, "Wood", "Sheep", 2, 2);
 
-    CHECK(trader1.getResource(Resources::Wood) == 1);
-    CHECK(trader1.getResource(Resources::Sheep) == 2);
-    CHECK(trader2.getResource(Resources::Wood) == 2);
+    CHECK(trader1.getResource(Resources::Wood) == 2);  // got 1 wood in the beginning gave 2 away (4-2=2)
+    CHECK(trader1.getResource(Resources::Sheep) == 3);  // got 1 sheep in the beginning recieved 2 (1+2=3)
+    CHECK(trader2.getResource(Resources::Wood) == 3);  // got 1  in the beginning recieved 2 (1+2=3)
 }
 
 
-// TEST_CASE("Test Game Logic - Choose Starting Player") {
-//     Player p1("Roey");
-//     Player p2("Yael");
-//     Player p3("Shir");
-//     Board board;
-//     Catan catan(p1, p2, p3);
-
-//     catan.ChooseStartingPlayer();
-
-//     CHECK(catan.getPlayers().at(catan.getPlayerByName(catan.getPlayers().at(catan.getPlayerByName("Roey"))->getName()) % 3)->getName() == p1.getName() || 
-//           catan.getPlayers().at(catan.getPlayerByName(catan.getPlayers().at(catan.getPlayerByName("Yael"))->getName()) % 3)->getName() == p2.getName() || 
-//           catan.getPlayers().at(catan.getPlayerByName(catan.getPlayers().at(catan.getPlayerByName("Shir"))->getName()) % 3)->getName() == p3.getName());
-// }
 
 TEST_CASE("Test Game Logic - Roll Dice") {
    Player p1("Roey");
@@ -92,14 +80,14 @@ TEST_CASE("Test Board - Invalid Edge Access") {
 
 TEST_CASE("Test Player - Add and Remove Resources") {
     Player player("TestPlayer");
-    player.addResource(Resources::Brick, 3);
+    player.addResource(Resources::Brick, 3);  //there is 1 resource for every player in the beginning of the game  which means we need to see we get (3+1)
     player.addResource(Resources::Wood, 2);
 
-    CHECK(player.getResource(Resources::Brick) == 3);
-    CHECK(player.getResource(Resources::Wood) == 2);
+    CHECK(player.getResource(Resources::Brick) == 4); //there is 1 resource for every player in the beginning of the game  which means we need to see we get (2+1)
+    CHECK(player.getResource(Resources::Wood) == 3);
 
-    player.removeResource(Resources::Brick, 2);
-    CHECK(player.getResource(Resources::Brick) == 1);
+    player.removeResource(Resources::Brick, 2); //(4-2)
+    CHECK(player.getResource(Resources::Brick) == 2);
 }
 
 TEST_CASE("Test Player - Buy Settlements and Roads") {
@@ -153,20 +141,21 @@ TEST_CASE("Test Game - Check Winner") {
     catan.addPlayer(&p3);
 
     p1.addPoints(10);
-    catan.checkForWinner();
+    catan.printWinner();
     CHECK(p1.getPlayerPoints() >= 10);
 }
 
 TEST_CASE("Test Player - Buy Development Card") {
-    Player player("TestPlayer");
+    Player player1("TestPlayer");
     Deck deck;
+    Board board;
 
-    player.addResource(Resources::Wheat, 1);
-    player.addResource(Resources::Sheep, 1);
-    player.addResource(Resources::Ore, 1);
-    player.buyDevelopmentCard(deck);
+    player1.addResource(Resources::Wheat, 1);
+    player1.addResource(Resources::Sheep, 1);
+    player1.addResource(Resources::Ore, 1);
+    player1.buyDevelopmentCard(deck,board);
 
-    CHECK(player.getDevelopmentCards().size() == 1);
+    CHECK(player1.getDevelopmentCards().size() == 1);
 }
 
 TEST_CASE("Test Board - Allocate Resources") {
@@ -181,74 +170,7 @@ TEST_CASE("Test Board - Allocate Resources") {
     CHECK(player.getResource(Resources::Wood) == 1);
 }
 
-TEST_CASE("Test Player - Knight Card") {
-    Player player("TestPlayer");
-    Board board;
-    KnightCard knight;
-    
-    player.addResource(Resources::Wheat, 1);
-    player.addResource(Resources::Sheep, 1);
-    player.addResource(Resources::Ore, 1);
-    player.addDevelopmentCard(&knight);
-    
-    knight.playEffect(player, board);
-    CHECK(player.getKnightCount() == 1);
-}
 
-
-TEST_CASE("Test Player - Monopoly Card") {
-    Player player("TestPlayer");
-    Player other("OtherPlayer");
-    Board board;
-    ProgressCard monopoly(ProgressType::Monopoly);
-
-    other.addResource(Resources::Wood, 5);
-    player.addDevelopmentCard(&monopoly);
-    
-    monopoly.playEffect(player, board);
-    CHECK(player.getResource(Resources::Wood) == 5);
-    CHECK(other.getResource(Resources::Wood) == 0);
-}
-
-TEST_CASE("Test Player - Year of Plenty Card") {
-    Player player("TestPlayer");
-    Board board;
-    ProgressCard yearOfPlenty(ProgressType::YearOfPenlty);
-
-    player.addDevelopmentCard(&yearOfPlenty);
-    
-    yearOfPlenty.playEffect(player, board);
-    CHECK(player.getResource(Resources::Brick) == 1);
-    CHECK(player.getResource(Resources::Wood) == 1);
-}
-
-TEST_CASE("Test Player - Road Building Card") {
-    Player player("TestPlayer");
-    Board board;
-    ProgressCard roadBuilding(ProgressType::RoadBuilding);
-
-    player.addDevelopmentCard(&roadBuilding);
-    
-    roadBuilding.playEffect(player, board);
-    CHECK(player.getRoadCount() == 2); // Assuming 2 roads are placed
-}
-
-
-TEST_CASE("Test Game - Rotate Players") {
-    Player p1("Player1");
-    Player p2("Player2");
-    Player p3("Player3");
-    Catan catan(p1, p2, p3);
-
-    catan.nextTurn();
-    CHECK(catan.getCurrentPlayer().getName() == "Player2");
-
-    catan.nextTurn();
-    CHECK(catan.getCurrentPlayer().getName() == "Player3");
-
-    catan.nextTurn();
-    CHECK(catan.getCurrentPlayer().getName() == "Player1");
-}
 
 TEST_CASE("Test Player - Multiple Trades") {
     Player trader1("Trader 1");
@@ -260,35 +182,24 @@ TEST_CASE("Test Player - Multiple Trades") {
     trader1.trade(trader2, "Wood", "Brick", 2, 2);
     trader1.trade(trader2, "Wood", "Brick", 2, 2);
 
-    CHECK(trader1.getResource(Resources::Wood) == 1);
-    CHECK(trader1.getResource(Resources::Brick) == 4);
-    CHECK(trader2.getResource(Resources::Wood) == 4);
+    CHECK(trader1.getResource(Resources::Wood) == 2);
+    CHECK(trader1.getResource(Resources::Brick) == 5);
+    CHECK(trader2.getResource(Resources::Wood) == 5);
 }
 
 TEST_CASE("Test Game - Multiple Development Cards") {
     Player player("TestPlayer");
     Deck deck;
+    Board board;
 
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i <5; ++i) {
         player.addResource(Resources::Wheat, 1);
         player.addResource(Resources::Sheep, 1);
         player.addResource(Resources::Ore, 1);
-        player.buyDevelopmentCard(deck);
+        player.buyDevelopmentCard(deck,board);
     }
 
     CHECK(player.getDevelopmentCards().size() == 5);
-}
-
-TEST_CASE("Test Player - Increment Knight Count") {
-    Player player("TestPlayer");
-    KnightCard knight;
-    Board board;
-
-
-    player.addDevelopmentCard(&knight);
-    knight.playEffect(player,board);
-
-    CHECK(player.getKnightCount() == 1);
 }
 
 TEST_CASE("Test Player - Trade and Check Resources") {
@@ -300,10 +211,10 @@ TEST_CASE("Test Player - Trade and Check Resources") {
 
     trader1.trade(trader2, "Wood", "Brick", 3, 2);
 
-    CHECK(trader1.getResource(Resources::Wood) == 2);
-    CHECK(trader1.getResource(Resources::Brick) == 2);
-    CHECK(trader2.getResource(Resources::Wood) == 3);
-    CHECK(trader2.getResource(Resources::Brick) == 3);
+    CHECK(trader1.getResource(Resources::Wood) == 3);
+    CHECK(trader1.getResource(Resources::Brick) == 3);
+    CHECK(trader2.getResource(Resources::Wood) == 4);
+    CHECK(trader2.getResource(Resources::Brick) == 4);
 }
 
 

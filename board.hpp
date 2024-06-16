@@ -1,3 +1,11 @@
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
+
+
+
 #ifndef BOARD_HPP
 #define BOARD_HPP
 
@@ -83,7 +91,8 @@ namespace ariel{
             vector<Vertex>& getVertices();
             vector<Edge>& getEdges() ;
             vector<Tile>& getTiles();
-            void addPlayer(Player& player); // Add this method
+            void addPlayer(Player& player); 
+            
         
            
     };

@@ -2,6 +2,13 @@
 #include "doctest.hpp"
 using namespace doctest;
 
+
+
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
 const int MIN_TESTS = 20;
 
 int return_code = -1;

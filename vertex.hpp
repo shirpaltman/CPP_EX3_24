@@ -1,5 +1,13 @@
+
 #ifndef VERTEX_HPP
 #define VERTEX_HPP
+
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
+ 
 
 #include <vector>
 #include <string>
@@ -7,46 +15,41 @@
 #include <memory>
 
 using namespace std;
-namespace ariel{
+
+namespace ariel {
+
     class Vertex {
-        private:
-        string owner;
-        vector<Tile*> adjTiles;
-        //vector< Vertex*>adjVertices;
-            
+    private:
+        string owner;  // Name of the owner of this vertex
+        vector<Tile*> adjTiles;  // Adjacent tiles to this vertex
         
-        public:
-            
-            Vertex() :owner(""){
-            }
-            
-        
-            
+    public:
+        // Default constructor
+        Vertex() : owner("") {}
 
-            void addAdjacentTile(Tile* tile) {
-                adjTiles.push_back(tile);
-            }
+        // Add an adjacent tile to this vertex
+        void addAdjacentTile(Tile* tile) {
+            adjTiles.push_back(tile);
+        }
 
-           
-            const string& getOwner()const{
-                return owner;
-            }
+        // Get the owner of this vertex
+        const string& getOwner() const {
+            return owner;
+        }
 
-            void setOwner (const string& ownerName){
-                owner = ownerName;
-            }
+        // Set the owner of this vertex
+        void setOwner(const string& ownerName) {
+            owner = ownerName;
+        }
 
-            const vector<Tile*>& getAdjacentTiles()const{
-                return adjTiles;
-            }
+        // Get the adjacent tiles of this vertex
+        const vector<Tile*>& getAdjacentTiles() const {
+            return adjTiles;
+        }
 
-        ~Vertex() {
-            //Clean up dynamically allocated memory, if any
-            // for (auto *tile : adjTiles) {
-            //     delete tile;
-            // }
-            //cout << "Vertex destructor called" << endl;
-        } 
+        // Destructor
+        ~Vertex() {}
     };
 }
-#endif //VERTEX_HPP
+
+#endif // VERTEX_HPP

@@ -1,3 +1,10 @@
+/*
+Author:Shir Altman
+ID:325168870
+Email: shirpaltman@gmail.com
+*/
+
+
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
@@ -25,13 +32,12 @@ namespace ariel{
         int KnightCount;
         bool isPlaying;
         unordered_map<Resources,int> resources;
-        //vector<unique_ptr<Card>> deck;
         vector<Card*> developmentCards;
-        
-        
         int settlements;
         int roads;
         int cities;
+        int settlementCount;
+        int roadCount;
 
         public:
         Player( const string& name) ;
@@ -47,7 +53,7 @@ namespace ariel{
         int rollDice()const;
         void endTurn();
         void trade(Player& other, string give ,string get,int totalGive,int totalGet);
-        void buyDevelopmentCard(Deck& deck);
+        void buyDevelopmentCard(Deck& deck,Board& board);
         void printPoints()const;
         void printResources()const;
         int getPlayerPoints()const;
@@ -65,8 +71,13 @@ namespace ariel{
         int getSettlementCount() const;
         int getRoadCount() const;
         void addDevelopmentCard(Card* card);
-        const std::vector<Card*>& getDevelopmentCards() const;
+        vector<Card*>& getDevelopmentCards() ;
         int getKnightCount() const;
+        void incrementSettlment();
+        void incrementRoad();
+        Resources chooseResourceToClaim();  // Allows the player to choose a resource to claim
+        Resources chooseResource();         // Allows the player to choose a resource
+        int chooseRoadLocation();           // Allows the player to choose a location for a road
 
   
     };   
