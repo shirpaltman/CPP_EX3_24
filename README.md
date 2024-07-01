@@ -21,33 +21,7 @@ This project simulates a game of Catan, a popular board game where players colle
 
 ---
 
-## Project Structure ##
-.
-├── src
-│ ├── board.cpp
-│ ├── catan.cpp
-│ ├── player.cpp
-│ ├── Card.cpp
-│ ├── Deck.cpp
-│ ├── Tile.cpp
-│ ├── Vertex.cpp
-│ ├── Demo.cpp
-│ ├── Test.cpp
-│ └── TestCounter.cpp
-├── include
-│ ├── board.hpp
-│ ├── catan.hpp
-│ ├── player.hpp
-│ ├── Card.hpp
-│ ├── Deck.hpp
-│ ├── Tile.hpp
-│ ├── Vertex.hpp
-│ ├── resources.hpp
-├── Makefile
-├── README.md
-└── .gitignore
 
----
 
 ## Classes and Their Responsibilities ##
 
